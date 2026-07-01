@@ -1,4 +1,4 @@
-# gromacs-manual
+# Gromacs-Everything-Skill
 
 [![GROMACS](https://img.shields.io/badge/GROMACS-2026.2-00A86B?logo=gnometerminal)](https://www.gromacs.org)
 [![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-6C47FF)](https://claude.ai/code)
@@ -31,10 +31,10 @@
 
 ```bash
 # 方式 1: 使用 npx（推荐）
-npx skills add MaybeBio/gromacs-manual -a claude-code
+npx skills add MaybeBio/Gromacs-Everything-Skill -a claude-code
 
 # 方式 2: 手动克隆
-git clone https://github.com/MaybeBio/gromacs-manual ~/.claude/skills/gromacs-manual
+git clone https://github.com/MaybeBio/Gromacs-Everything-Skill ~/.claude/skills/Gromacs-Everything-Skill
 ```
 
 ### 使用
@@ -151,7 +151,7 @@ GROMACS 用户指南 -> 第三方教程（Justin Lemkul）模拟 -> 实操: (本
 ## 文件结构
 
 ```
-gromacs-manual/
+Gromacs-Everything-Skill/
 ├── SKILL.md              # 技能主配置（Claude Code 入口）
 ├── README.md             # 本文件
 ├── patterns.md           # 14 个工作流/决策模式
