@@ -81,3 +81,57 @@ gmx wham -it tpr_files.dat -if pullf_files.dat -o profile.xvg -hist histo.xvg
 - **Ch 21**: Free energy theory
 - **Ch 25**: Soft-core potentials
 - **Ch 29**: AWH (automatic alternative to umbrella sampling)
+
+## Practical Umbrella Sampling Workflow (Lemkul Tutorial)
+
+Based on peptide dissociation from Aβ42 protofibril (Lemkul & Bevan, 2010). CC-BY 4.0.
+
+### Step 1: Generate Configurations via Pulling
+```ini
+pull                    = yes
+pull-ncoords            = 1
+pull-ngroups            = 2
+pull-group1-name        = Chain_A      ; the molecule being pulled
+pull-group2-name        = Chain_B      ; immobile reference
+pull-coord1-type        = umbrella
+pull-coord1-geometry    = distance
+pull-coord1-groups      = 1 2
+pull-coord1-rate        = 0.01         ; nm/ps — SLOW for near-equilibrium
+pull-coord1-k           = 1000         ; kJ/mol/nm²
+```
+```bash
+gmx grompp -f pull.mdp -c npt.gro -p topol.top -n index.ndx -t npt.cpt -o pull.tpr
+gmx mdrun -deffnm pull -pf pullf.xvg -px pullx.xvg
+```
+
+### Step 2: Extract Frames at Target Spacings
+Read `pullx.xvg` to find the frame where COM distance ≈ target for each window. Extract with `trjconv`. Typical spacing: 0.1–0.2 nm, ensuring ~1–2 Å overlap in position distributions.
+
+### Step 3: Run Umbrella Windows
+Each window: fixed restraint (`pull-coord1-rate = 0.0`), 5–20 ns production, independent directory.
+```ini
+pull-coord1-init        = <target_distance>
+pull-coord1-rate        = 0.0          ; fixed position
+pull-coord1-k           = 1000
+```
+
+**Force constant tuning:**
+- Too weak (k < 500): system drifts, poor localization
+- Too strong (k > 3000): sampling too narrow, poor overlap
+- **Rule of thumb**: k should produce σ ≈ 0.05–0.1 nm in the position distribution
+
+### Step 4: WHAM Analysis
+```bash
+gmx wham -it tpr-files.dat -if pullf-files.dat -o profile.xvg -hist histo.xvg
+```
+- **Check histogram overlap before WHAM**: visualize position distributions from each window
+- Gaps = windows too far apart or force constant too weak → WHAM fails
+- ΔG_bind = PMF_plateau − PMF_minimum
+
+### Common Pitfalls
+| Issue | Cause | Fix |
+|---|---|---|
+| WHAM fails to converge | No histogram overlap | Decrease window spacing or increase k |
+| PMF not smooth | Insufficient sampling | Longer production per window (> 10 ns) |
+| Unphysical PMF shape | Pull rate too high in Step 1 | Reduce `pull-coord1-rate` to ≤ 0.005 |
+| Reference drifts | Chain_B too small | Apply position restraints to reference group |

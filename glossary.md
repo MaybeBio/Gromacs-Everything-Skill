@@ -147,3 +147,57 @@
 **xtc file (.xtc)** — Compressed trajectory format using reduced precision; much smaller than .trr, suitable for analysis (Ch 27)
 
 **xvg file (.xvg)** — Xmgrace plot data format; used for all GROMACS analysis tool output (Ch 27)
+
+---
+
+## Tutorial & Theory Additions
+
+### A-B
+**Area per lipid** — Key membrane simulation validation metric; DPPC experimental value ~62–64 Å² (ch16)
+
+**BAR (Bennett Acceptance Ratio)** — Free energy analysis method using energy differences between neighboring lambda states; more efficient than TI, implemented via `gmx bar` (ch21)
+
+**Berger lipids** — United-atom lipid parameters combining GROMOS atom types with OPLS partial charges; Ryckaert-Bellemans dihedral potentials with 1-4 LJ scaling factor 0.125 (ch16)
+
+**CGenFF** — CHARMM General Force Field server; generates ligand topologies with penalty scores (<10: reliable; 10–50: validate; >50: reparametrize) (ch08)
+
+**Decoupling (alchemical)** — Systematic removal of solute-solvent interactions via lambda scaling; discharge first (Coulomb → 0) then decouple vdW (LJ → 0) (ch21)
+
+**Hydrogen bonds (GROMACS criteria)** — Donor-H distance ≤ 0.35 nm and donor-acceptor-H angle ≤ 30° (not donor-H-acceptor) (ch05)
+
+### I-L
+**InflateGRO** — Perl script for embedding proteins into lipid bilayers; inflates lipids (scale factor >1), deletes overlapping lipids, then iteratively shrinks (scale factor <1) until area per lipid converges (ch16)
+
+**Insert-molecules (`gmx insert-molecules`)** — Adds molecules to simulation box with steric clash detection; used for non-water solvents where `solvate` is inappropriate (ch16)
+
+**Lambda window** — A discrete value of the coupling parameter λ; 20+ windows (Δλ ≈ 0.05) needed for BAR convergence in free energy calculations (ch21)
+
+**Ligand parametrization** — Process of generating topology/parameters for non-standard residues; requires external tools/servers specific to force field family (ch08)
+
+### M-P
+**Membrane packing** — InflateGRO methodology: orient → inflate → delete overlaps → EM → iteratively shrink to target area per lipid (ch16)
+
+**Penalty score (CGenFF)** — Per-parameter quality metric; <10 = reliable for immediate use, 10–50 = validate before use, >50 = manual reparametrization required (ch08)
+
+**Position restraints (ligand)** — Separate `posre_ligand.itp` file for restraining ligand during equilibration; controllable via independent `#ifdef POSRES_LIG` block (ch08)
+
+**Pulling simulation** — SMD-like simulation where a harmonic restraint moves along a reaction coordinate at a defined rate; precursor to umbrella sampling windows (ch28)
+
+### R-Z
+**Reaction coordinate** — The degree of freedom along which PMF is calculated (e.g., COM distance between two groups); must be physically meaningful (ch28)
+
+**Soft-core potentials** — Modified LJ/Coulomb functional form preventing singularities at intermediate λ values; parameters: sc-alpha=0.5, sc-power=1, sc-sigma=0.3 (ch25, ch21)
+
+**Umbrella sampling** — Biased MD method: run multiple independent simulations with harmonic restraints at fixed positions along a reaction coordinate; WHAM reconstructs the unbiased PMF (ch28)
+
+**Virtual sites** — Massless interaction centers constructed from real atoms; eliminate high-frequency bond vibrations → enable dt = 4–5 fs with constraints=all-bonds (ch25)
+
+**Water deletor** — Custom Perl script for removing water molecules from the hydrophobic core of lipid bilayers after `gmx solvate` (ch16)
+
+**WHAM (Weighted Histogram Analysis Method)** — Algorithm for reconstructing unbiased PMF from umbrella sampling histograms by deconvolving the known bias potential (ch28)
+
+**蛙跳式算法 (Leap-frog)** — GROMACS默认MD积分器，对位置三阶精度，时间可逆 (ch17/ch19/ch20)
+
+**速度重缩放 (V-rescale)** — 带有随机项的速度重缩放恒温器，产生正确的正则系综 (ch17/ch19/ch20)
+
+**系综 (Ensemble)** — 统计力学术语，NVT(正则)/NPT(等温等压)/NVE(微正则)等 (ch17/ch19/ch20)

@@ -84,3 +84,28 @@ awh1-equilibrate-histogram = no
 - **Ch 28**: Umbrella sampling (alternative PMF method)
 - **Ch 30**: Colvars and PLUMED (alternative enhanced sampling)
 - **Ch 39**: Advanced AWH MDP parameters
+
+## 中文术语对照 (Chinese Terminology)
+
+**专题方法** (来自中文手册 §6.1-6.7):
+
+| 中文 | English | 说明 |
+|------|---------|------|
+| 平均力势 (PMF) | Potential of Mean Force | 沿反应坐标的自由能 |
+| 非均衡牵引 | Non-equilibrium pulling | Jarzynski等式求自由能 |
+| 牵引代码 | Pull code | 施加外力/约束于定义组 |
+| 强制旋转 | Enforced rotation | 固定轴旋转 + 柔性轴旋转 |
+| 计算电生理学 | Computational electrophysiology (CompEL) | 双膜系统模拟离子通道 |
+| 自适应偏置 | Adaptive biasing (AWH) | 自动计算PMF |
+| 伞形采样 | Umbrella sampling | 谐波约束沿反应坐标 |
+| 自由能代码求PMF | PMF via free energy code | 用alchemical代码替代牵引 |
+| 移除最快自由度 | Removing fastest DOF | 虚拟位点+HMR, 增大时间步长 |
+| 氢原子键-键角振动 | H-atom bond-angle vibrations | HMR的物理基础 |
+| 芳香基团面外振动 | Aromatic out-of-plane vibrations | 虚拟位点消除的额外自由度 |
+| 粘度计算 | Viscosity calculation | Einstein关系, 压力张量自相关 |
+| 表格相互作用函数 | Tabulated interaction functions | 用户自定义势能表 |
+| 混合量子经典 (QM/MM) | Hybrid QM/MM | GROMACS+CP2K/MiMiC |
+| 自适应分辨率 | Adaptive resolution (AdResS) | 不同区域不同分辨率 |
+| 交互式MD | Interactive MD (iMD) | VMD实时操控模拟 |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §6.1-6.14, CC-BY compatible.

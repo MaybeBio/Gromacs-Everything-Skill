@@ -64,3 +64,17 @@ GROMACS achieves high performance through domain decomposition (spatial) + MPI (
 ## Connects To
 - **Ch 11**: Performance tuning practical guide
 - **Ch 2**: Build configuration for parallelization
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 区域分解 | Domain decomposition | 将模拟盒分为3D网格, 每个MPI进程负责一个域 |
+| 动态负载均衡 | Dynamic load balancing (DLB) | 重分配原子以平衡计算负载 |
+| 通讯坐标和力 | Communication of coordinates and forces | 域边界halo区的信息交换 |
+| 多程序多数据 | MPMD (Multiple Program Multiple Data) | PME专用进程模式 |
+| 隐式溶剂模型 | Implicit solvent | 用连续介质替代显式水 (GBSA方法) |
+| 相互作用范围 | Interaction range | 决定了域分解中的通讯量 |
+| 壳层分子动力学 | Shell MD | 用于极化力场的壳层粒子方法 |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §3.17-3.18, CC-BY compatible.

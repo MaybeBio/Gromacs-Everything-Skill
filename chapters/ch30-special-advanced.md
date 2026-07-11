@@ -92,3 +92,35 @@ GROMACS supports advanced simulation methods beyond classical MD: QM/MM (CP2K, M
 - **Ch 21**: Free energy methods
 - **Ch 29**: AWH adaptive biasing
 - **Ch 25**: Virtual sites for removing fast DOF
+
+## 中文术语对照 (Chinese Terminology)
+
+**高级方法** (来自中文手册 §6.8-6.14):
+
+| 中文 | English | 说明 |
+|------|---------|------|
+| 混合量子经典 | QM/MM (Hybrid QM/Classical) | GROMACS(MM) + CP2K/MiMiC(QM) |
+| 链接原子 | Link atoms | 封端QM/MM边界 |
+| 自适应分辨率方案 | Adaptive resolution scheme (AdResS) | 不同区域不同精度 |
+| 粗粒化力场 | Coarse-grained force fields | MARTINI, PLUM |
+| 集体变量 | Collective variables (Colvars) | 描述集合运动, PLUMED接口 |
+| 神经网络势 | Neural network potentials (NNP) | 机器学习力场 |
+| 快速多极子方法 | Fast multipole method (FMM) | O(N)长程静电替代PME |
+| 交互式分子动力学 | Interactive MD (iMD) | VMD插件实时操控 |
+| 剪切模拟 | Shear simulations | Lees-Edwards边界 |
+| 表格势能函数 | Tabulated potentials | 三次样条插值, 用户自定义 |
+| 粘度 | Viscosity | 压力张量自相关或余弦加速 |
+| 膜嵌入 | Membrane embedding | `gmx membed` 自动嵌入 |
+
+**力场** (来自中文手册 §4.10):
+
+| 中文 | English | 说明 |
+|------|---------|------|
+| GROMOS-96 | GROMOS-96 | 联合原子, 几何组合规则 |
+| OPLS/AA | OPLS-AA | 全原子, 有机分子 |
+| AMBER | AMBER | 全原子, 蛋白质/核酸 |
+| CHARMM | CHARMM | 全原子, CMAP修正 |
+| MARTINI | MARTINI | 粗粒化力场, 4:1映射 |
+| PLUM | PLUM | 蛋白质-配体粗粒化力场 |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §4.10, §6.8-6.14, CC-BY compatible.

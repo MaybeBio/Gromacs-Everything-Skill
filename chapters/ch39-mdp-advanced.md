@@ -72,3 +72,39 @@ Beyond basic simulation parameters, GROMACS supports advanced .mdp options for f
 - **Ch 9**: Basic MDP parameters
 - **Ch 21**: Free energy theory
 - **Ch 28-30**: Special topics
+
+## 中文术语对照 (Chinese Terminology)
+
+**高级MDP参数** (来自中文手册 §7.3自由能/扩展系综部分):
+
+| 中文 | English |
+|------|---------|
+| 自由能量计算(启用) | free-energy = yes |
+| 耦合分子类型 | couple-moltype |
+| 耦合初始态/终态 | couple-lambda0 / couple-lambda1 |
+| 分子内耦合 | couple-intramol |
+| 初始λ | init-lambda |
+| λ步长 | delta-lambda |
+| 显式λ状态 | init-lambda-state |
+| dH/dλ输出频率 | nstdhdl |
+| λ邻居计算 | calc-lambda-neighbors |
+| 软核α/幂/σ | sc-alpha / sc-power / sc-sigma |
+| 软核库仑 | sc-coul |
+| 扩展系综 | expanded-ensemble |
+| 权重均衡 | lmc-weights-equil |
+| Wang-Landau增量 | weight-equil-wl-delta |
+| 偏置共享组 | awh-share-group |
+| 目标分布 | awh-target |
+| 初始误差估计 | awh-error-init |
+| 误差增长策略 | awh-growth |
+| 直方图平衡 | awh-equilibrate-histogram |
+| 覆盖直径 | awh1-dim1-cover-diameter |
+| 扩散常数估计 | awh1-dim1-diffusion |
+| 量子力学/分子力学 | QM/MM |
+| QM原子组 | QMMM-grps |
+| QM方法/基组/电荷/多重度 | QMmethod / QMbasis / QMcharge / QMmult |
+| 牵引打印COM | pull-print-com |
+| 力输出频率 | pull-nstfout |
+| PBC参考处理 | pull-pbc-ref-prev-step-com |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §7.3, CC-BY compatible.

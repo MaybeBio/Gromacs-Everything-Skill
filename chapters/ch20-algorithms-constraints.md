@@ -85,3 +85,31 @@ GROMACS provides multiple thermostat and barostat options for different simulati
 ## Connects To
 - **Ch 9**: MDP coupling parameters
 - **Ch 19**: MD integrator details
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 温度耦合/恒温器 | Thermostat | 控制体系温度 |
+| 压力耦合/压浴 | Barostat | 控制体系压力 |
+| 弱耦合 | Weak coupling | Berendsen方法的特点 |
+| 扩展系统方法 | Extended system | Nose-Hoover和Parrinello-Rahman的方法论 |
+| 随机项/随机力 | Stochastic term/force | V-rescale和Langevin动力学的基础 |
+| 约束算法 | Constraint algorithms | LINCS/SHAKE/SETTLE |
+| 键长约束 | Bond length constraints | 移除高频振动, 允许更大时间步长 |
+| 迭代容差 | Iteration tolerance | SHAKE的收敛判据 `shake-tol = 0.0001` |
+| 展开阶数 | Expansion order | LINCS中耦合矩阵的展开阶数 (`lincs-order = 4`) |
+
+**SHAKE vs LINCS的中文解释**: SHAKE是迭代方法, 通过Lagrange乘子重置键长, 并行性差; LINCS是线性约束求解器, 默认方法, 快且可并行; SETTLE是分析解, 仅用于刚性3原子水分子。
+
+**恒温器选择原则**:
+- Berendsen: 快速收敛但**不产生正确系综** → 仅用于初始弛豫
+- V-rescale (Bussi恒温器): 速度重缩放 + 随机项 → **产生正确NVT系综**
+- Nose-Hoover: 扩展系统, 可能产生温度振荡 → 生产相用
+
+**压浴选择原则**:
+- Berendsen压浴: 快速盒子弛豫, 不产生正确NPT系综
+- Parrinello-Rahman: 扩展系统, 正确NPT系综, 需系统已接近平衡密度
+- 膜系统必须使用 `semiisotropic` (x/y和z方向独立缩放)
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §3.4.8-3.4.9, §3.6, CC-BY compatible.

@@ -105,14 +105,95 @@ gmx chi -s topol.tpr -f traj.xtc -g chi.log
 - Chi angles: side-chain rotamer analysis
 
 ## Key Takeaways
-1. Cα RMSD < 0.3 nm indicates stable protein
+1. Cα RMSD < 0.3 nm indicates stable protein; RMSD is a degenerate metric — cannot assess convergence alone
 2. RMSF identifies flexible regions (loops > helices > sheets)
 3. Rg monitors folding/compaction state
 4. RDF reveals solvent/ion structure around solute
 5. MSD linear region gives diffusion coefficient
 6. Hydrogen bonds defined by D-A distance < 0.35 nm, angle > 150°
 
+## Practical Analysis Workflow (Lemkul Tutorial)
+
+Standard post-production analysis sequence. CC-BY 4.0.
+
+### Step 0: Correct Periodicity (ALWAYS FIRST)
+```bash
+gmx trjconv -s md.tpr -f md.xtc -o md_noPBC.xtc -pbc mol -center
+# Select Protein (1) to center, System (0) for output
+```
+Without this, the protein may appear broken across periodic boundaries.
+
+### Step 1: Structural Stability
+```bash
+# RMSD vs starting structure (after equilibration)
+gmx rms -s md.tpr -f md_noPBC.xtc -o rmsd.xvg -tu ns
+# Select Backbone (4) for both fit and calculation
+
+# RMSD vs crystal structure
+gmx rms -s em.tpr -f md_noPBC.xtc -o rmsd_xtal.xvg -tu ns
+# em.tpr still has the original crystal coordinates (pre-EM)
+
+# RMSF per residue
+gmx rmsf -s md.tpr -f md_noPBC.xtc -o rmsf.xvg -res
+```
+**Interpreting RMSD**: For a stable ~15 kDa protein, RMSD ~0.09 ± 0.01 nm. Larger complexes naturally have larger RMSD. RMSD cannot assess convergence — it's a degenerate metric that accumulates many small deviations.
+
+### Step 2: Compactness
+```bash
+gmx gyrate -s md.tpr -f md_noPBC.xtc -o gyrate.xvg -sel Protein -tu ns
+```
+Stable Rg ≈ stable fold. Drifting Rg → unfolding or compaction.
+
+### Step 3: Secondary Structure
+```bash
+gmx dssp -s md.tpr -f md_noPBC.xtc -tu ns -o dssp.dat -num dssp_num.xvg
+```
+Requires `dssp` binary. Tracks α-helix/β-sheet/coil persistence per residue over time.
+
+### Step 4: Hydrogen Bond Analysis
+GROMACS uses two criteria (NOT the conventional donor-H-acceptor angle):
+- Donor-H distance ≤ 0.35 nm (`-hbr` flag)
+- Donor-acceptor-H angle ≤ 30° (so donor-H-acceptor = 150°–180°)
+
+```bash
+# Backbone H-bonds (use MainChain+H, NOT Backbone — Backbone has no H!)
+gmx hbond -s md.tpr -f md_noPBC.xtc -tu ns -num hbnum_mainchain.xvg
+# Select MainChain+H (7) for both groups
+
+# Sidechain H-bonds
+gmx hbond -s md.tpr -f md_noPBC.xtc -tu ns -num hbnum_sidechain.xvg
+# Select SideChain (8) for both groups
+
+# Protein-water H-bonds
+gmx hbond -s md.tpr -f md_noPBC.xtc -tu ns -num hbnum_prot_wat.xvg
+# Select Protein (1) and Water/SOL (12/13)
+```
+
+### Step 5: Smoothing with Running Averages
+In XmGrace: Data → Transformations → Running Averages → select dataset → set window (e.g., 500 ps = 50 frames at 10 ps/frame). Smoothing reduces noise while preserving trends.
+
 ## Connects To
-- **Ch 13**: Analysis command reference
-- **Ch 19**: PBC and minimum image
+- **Ch 13**: Command reference for all analysis tools
+- **Ch 19**: PBC, minimum image, trjconv periodicity correction
 - **Ch 33**: Implementation details
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | 说明 |
+|------|---------|------|
+| 分析/轨迹分析 | Analysis / Trajectory analysis | 对MD轨迹进行计算 |
+| 均方根偏差 | RMSD | 与参考结构的偏差 |
+| 均方根涨落 | RMSF | 每个原子/残基的柔性 |
+| 回旋半径 | Radius of gyration (Rg) | 蛋白质紧致度的度量 |
+| 径向分布函数 | Radial distribution function (RDF/g(r)) | 溶剂/离子结构 |
+| 均方位移 | Mean square displacement (MSD) | 扩散系数 |
+| 氢键 | Hydrogen bonds | 供体-受体距离+角度判据 |
+| 聚类分析 | Clustering | GROMOS方法, RMSD基 |
+| 二级结构 | Secondary structure | DSSP算法 |
+| 主成分分析 | PCA / Essential dynamics | 原子涨落的协方差分析 |
+| 能量分析 | Energy analysis | `gmx energy` 提取各能量项 |
+| 二面角分析 | Dihedral analysis | Ramachandran图, χ角 |
+| 相关性函数 | Correlation functions | 自相关和交叉相关 |
+| 曲线拟合 | Curve fitting | `gmx analyze -f data.xvg -fit` |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §8 (分析), CC-BY compatible.

@@ -45,3 +45,32 @@ Used in some specialized contexts where quantities are expressed in dimensionles
 ## Connects To
 - **Ch 9**: MDP parameters (use these units)
 - **Ch 23**: Non-bonded interaction formulas
+
+## 中文术语对照 (Chinese Terminology)
+
+**符号约定** (来自中文手册 §2.1):
+| 中文 | English |
+|------|---------|
+| 矢量/粗斜体 | Vector (bold italic): **r**_i |
+| 矢量长度/斜体 | Scalar (italic): _r_i |
+| 位置矢量 | Position vector: **r**_i |
+| 粒子间矢量 | Inter-particle vector: **r**_ij = **r**_j − **r**_i |
+| 粒子间距离 | Inter-particle distance: r_ij = |**r**_ij| |
+| 力 | Force: **F**_i |
+
+**MD单位** (来自中文手册 §2.2-2.3):
+| 中文 | English | 单位 |
+|------|---------|------|
+| 长度 | Length | nm (1 nm = 10 Å) |
+| 时间 | Time | ps (1 ps = 10⁻¹² s) |
+| 质量 | Mass | u (原子质量单位, 1.66054×10⁻²⁷ kg) |
+| 能量 | Energy | kJ/mol |
+| 温度 | Temperature | K |
+| 电荷 | Charge | e (电子电荷) |
+| 压力 | Pressure | bar |
+| 力 | Force | kJ/mol/nm |
+| MD单位 | MD units | nm, ps, K, e, u 为基本单位 |
+| 约化单位 | Reduced units | 基于LJ参数σ, ε的无量纲单位 |
+| Boltzmann常数 | Boltzmann constant | 隐含在温度因子中 |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §2.1-2.3, CC-BY compatible.

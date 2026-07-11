@@ -86,3 +86,31 @@ MD of 2 waters, t= 0.0
 - **Ch 4**: File types in the workflow
 - **Ch 26**: Topology file structure details
 - **Ch 13**: Tools that read/write each format
+
+## 中文术语对照 (Chinese Terminology)
+
+**文件格式** (来自中文手册 §5.7, §7.2):
+
+| 中文 | English | 说明 |
+|------|---------|------|
+| 拓扑文件 | Topology file (.top) | 系统完整拓扑描述 |
+| 坐标文件 | Coordinate file (.gro) | 位置+速度+盒子矢量 |
+| 运行输入文件 | Run input file (.tpr) | 二进制, mdrun唯一必需输入 |
+| 轨迹文件 | Trajectory file (.trr/.xtc) | .trr全精度, .xtc压缩 |
+| 能量文件 | Energy file (.edr) | 二进制XDR格式 |
+| 检查点文件 | Checkpoint file (.cpt) | 全精度状态, 精确重启 |
+| 索引文件 | Index file (.ndx) | 原子组定义 |
+| 日志文件 | Log file (.log) | ASCII文本, 性能数据 |
+| 分子动力学参数文件 | MDP file (.mdp) | grompp输入参数 |
+| 包含拓扑文件 | Include topology (.itp) | 模块化拓扑片段 |
+| 残基拓扑文件 | Residue topology (.rtp) | pdb2gmx的构建块 |
+| 氢数据库 | Hydrogen database (.hdb) | 添加H原子的规则 |
+| 末端修补数据库 | Terminal database (.tdb) | N端/C端修补 |
+| 原子类型文件 | Atom type file (.atp) | pdb2gmx使用的原子类型定义 |
+| 通用数据文件 | Generic data file (.dat) | 通用ASCII数据 |
+| Grace/Xmgr图形格式 | Xmgrace format (.xvg) | 所有分析工具的输出格式 |
+| Brookhaven数据库 | Brookhaven databank (.brk) | 旧PDB格式 |
+| XDR格式 | XDR format | 可移植二进制格式 |
+| 力场目录 | Force field directory (.ff) | 完整力场参数集 |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §5.7, §7.2, CC-BY compatible.

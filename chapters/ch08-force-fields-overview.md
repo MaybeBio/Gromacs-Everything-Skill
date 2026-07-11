@@ -65,8 +65,48 @@ gmx pdb2gmx -f protein.pdb -o processed.gro -water spc -ff gromos54a7 -ignh
 4. Combination rules are force-field-specific — they affect non-bonded pair interactions
 5. Ion parameters matter — use the recommended set for each force field
 
+## Ligand Parametrization: CGenFF Workflow (Lemkul Tutorial)
+
+When simulating a non-standard small molecule with CHARMM, use the CGenFF server pipeline. CC-BY 4.0.
+
+### The Pipeline
+1. **Split**: Separate protein and ligand from PDB
+2. **Protein**: `pdb2gmx` on protein alone (ligand is not in `.rtp`)
+3. **Ligand**: Add H in Avogadro → export as Sybyl `.mol2`
+4. **Fix .mol2**: Consistent residue names, ascending bond order (`sort_mol2_bonds.pl`)
+5. **CGenFF**: Upload to server → download `.str` → convert to GROMACS `.itp`
+6. **Edit .itp**: Remove standalone system parts, embed bonded parameters inline
+7. **Merge**: Concatenate ligand atoms into protein `.gro`, update atom count
+8. **Topology**: `#include "ligand.itp"` AFTER parent FF `#include`, BEFORE `[ moleculetype ]`
+
+### Penalty Score Interpretation
+CGenFF provides per-parameter quality scores — this is what makes it trustworthy:
+- **< 10**: Reliable, ready for production use
+- **10–50**: Validation warranted (check charges, run test simulations)
+- **> 50**: Manual reparametrization required — parameter is unreliable
+
+### Server Choice by Force Field
+| Force Field | Server | Notes |
+|---|---|---|
+| CHARMM | **CGenFF** | Penalty scores; most transparent |
+| AMBER/GAFF | Antechamber + **acpype** | Python wrapper writes GROMACS topology |
+| GROMOS | **ATB** | Automated Topology Builder, 54A7 compatible |
+| OPLS-AA | **LigParGen** | Jorgensen group, OPLS-specific |
+
+### Force Field Modification Pattern
+For systems needing new molecule types within an existing FF:
+1. Copy parent `.ff` directory: `cp -r gromos53a6.ff/ gromos53a6_lipid.ff/`
+2. Add new atom types → `ffnonbonded.itp` (`[ atomtypes ]` section)
+3. Add nonbonded parameters → `ffnonbonded.itp` (`[ nonbond_params ]`, `[ pairtypes ]`)
+4. Add bonded parameters → `ffbonded.itp` (`[ dihedraltypes ]` etc.)
+5. Remove incompatible legacy entries
+6. Point topology to modified FF: `#include "gromos53a6_lipid.ff/forcefield.itp"`
+
+Never modify the original force field directory — always work on a copy.
+
 ## Connects To
 - **Ch 5**: System preparation with force fields
-- **Ch 16**: Adding residues, parameterizing novel molecules
+- **Ch 16**: Advanced preparation — membrane protein FF modification
 - **Ch 25**: Force field interaction function details
 - **Ch 26**: Topology file structure
+- **Ch 43** (Legacy Reference): Full ligand tutorial walkthrough (archived in book-to-skill source)

@@ -105,3 +105,70 @@ gmx gyrate -s topol.tpr -f traj.xtc
 gmx hbond -s topol.tpr -f traj.xtc -num hbnum.xvg
 gmx cluster -s topol.tpr -f traj.xtc -method gromos -cutoff 0.2
 ```
+
+---
+
+## Tutorial Decision Rules (Lemkul Tutorials, integrated into chapters)
+
+### Ligand Parametrization Server Selection
+| Force Field | Server/Tool | Notes |
+|---|---|---|
+| CHARMM | CGenFF | Penalty scores indicate quality; <10 reliable |
+| AMBER/GAFF | Antechamber + acpype | Python wrapper writes GROMACS topologies |
+| GROMOS96 54A7 | ATB (Automated Topology Builder) | Newer server, GROMOS-compatible |
+| OPLS-AA | LigParGen | Jorgensen group, OPLS topologies |
+
+### Membrane Simulation Rules
+| Parameter | Value | Reason |
+|---|---|---|
+| `pcoupltype` | `semiisotropic` | xy and z deform independently |
+| `ref_p` | 1.0 1.0 (xy z) | Separate reference pressure for lateral/normal |
+| `tc-grps` | `Protein_DPPC Water_and_ions` | Different diffusion rates |
+| `comm-grps` | `Protein_DPPC Water_and_ions` | Prevent phase drift in interfacial systems |
+| T for DPPC | ≥ 323 K | Above phase transition (Tm = 315 K) |
+| Area/lipid target | ~62–64 Å² (DPPC) | Experimental value; verify after equilibration |
+
+### Free Energy Quick Reference (Tutorial Context)
+| Task | Lambda windows | Key MDP | Analysis |
+|---|---|---|---|
+| vdW decoupling | 21 (Δλ=0.05) | sc-alpha=0.5, couple-lambda0=vdw-q | `gmx bar` |
+| Coulomb discharge | 21 (Δλ=0.05) | sc-coul=yes, couple-lambda0=q | `gmx bar` |
+| Hydration FE | 42 total (2 stages) | Sequential: q→0 then vdW→0 | ΔG_coul + ΔG_vdW |
+
+### Umbrella Sampling Quick Reference
+| Parameter | Typical Value | When to Adjust |
+|---|---|---|
+| `pull-coord1-k` | 1000 kJ/mol/nm² | Tighten if no overlap, loosen if too narrow |
+| `pull-coord1-rate` | 0.01 nm/ps (pulling) | Lower = closer to equilibrium |
+| `pull-coord1-rate` | 0.0 (umbrella) | Fixed position for sampling |
+| Window spacing | 0.1–0.2 nm | Must produce overlapping histograms |
+| Production/window | 5–20 ns | Longer for converged PMF |
+
+### Timestep Selection (with Tutorial Methods)
+| dt | Constraints | Method | Tutorial |
+|---|---|---|---|
+| 1 fs | none | Standard (no constraints) | — |
+| **2 fs** | `h-bonds` | **Standard for all tutorials** | ch05 |
+| 4 fs | `h-bonds` + HMR | Mass repartitioning | ch25 |
+| 5 fs | `all-bonds` + vsites | Virtual sites | ch25 |
+
+### Tutorial Analysis Commands Reference
+```bash
+# Standard analysis (ch05 / ch32)
+gmx trjconv -s md.tpr -f md.xtc -o md_noPBC.xtc -pbc mol -center
+gmx rms -s md.tpr -f md_noPBC.xtc -o rmsd.xvg -tu ns
+gmx rmsf -s md.tpr -f md_noPBC.xtc -o rmsf.xvg -res
+gmx gyrate -s md.tpr -f md_noPBC.xtc -o gyrate.xvg -sel Protein -tu ns
+gmx dssp -s md.tpr -f md_noPBC.xtc -tu ns -o dssp.dat -num dssp_num.xvg
+gmx hbond -s md.tpr -f md_noPBC.xtc -tu ns -num hbnum.xvg
+
+# Membrane analysis (ch16)
+gmx order -s md.tpr -f md.xtc -n sn1.ndx -d z -od deuter.xvg
+gmx density -s md.tpr -f md.xtc -n density_groups.ndx -o dens.xvg -d Z
+gmx msd -s md.tpr -f md.xtc -n p8.ndx -lateral z
+
+# Free energy analysis (ch21)
+gmx bar -f md*_dhdl.xvg -o bar.xvg
+
+# Umbrella sampling analysis (ch28)
+gmx wham -it tpr-files.dat -if pullf-files.dat -o profile.xvg -hist histo.xvg

@@ -62,3 +62,22 @@ Atoms are organized into groups for:
 - **Ch 9**: MDP parameters for integrator selection
 - **Ch 20**: Temperature/pressure coupling algorithms
 - **Ch 22**: Parallelization of neighbor search
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 蛙跳式算法 | Leap-frog algorithm | GROMACS默认积分器，对位置三阶精度，时间可逆 |
+| 速度Verlet算法 | Velocity Verlet | 需要精确Nose-Hoover/P-R耦合时使用 |
+| Trotter分解 | Trotter decomposition | 理解可逆积分方法的数学框架 |
+| 周期性边界条件 | Periodic Boundary Conditions (PBC) | 消除表面效应 |
+| 最小映像约定 | Minimum image convention | 每个粒子只考虑最近的映像 |
+| 邻区列表 | Neighbor list (pair list) | 短程相互作用的粒子对列表 |
+| 麦克斯韦-玻尔兹曼分布 | Maxwell-Boltzmann distribution | 初始速度生成 |
+| 质心运动移除 | Center of mass (COM) motion removal | 防止系统整体漂移 |
+
+**Leap-frog精度的中文表述**: 蛙跳式算法对位置 r 具有**三阶精度** (O(Δt³)), 时间可逆。公式 (3.25-3.26): v(t+Δt/2) = v(t−Δt/2) + (Δt/m)·F(t); r(t+Δt) = r(t) + Δt·v(t+Δt/2)
+
+**初始速度生成**: 根据给定温度 T 从麦克斯韦-玻尔兹曼分布生成初始速度, 使用12个随机数产生正态分布, 移除质心运动后进行速度缩放以使总动能对应于目标温度。
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §3.4, CC-BY compatible.

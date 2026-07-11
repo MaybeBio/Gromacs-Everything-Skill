@@ -162,3 +162,27 @@ continuation        = yes
 - **Ch 4**: Getting started workflow
 - **Ch 20**: Thermostat/barostat algorithms
 - **Ch 25**: Electrostatic and VdW interaction details
+
+## 中文术语对照 (Chinese Terminology)
+
+**MDP运行参数** (来自中文手册 §7.3):
+
+| 分类 | 中文 | English |
+|------|------|---------|
+| 通用 | 积分器/步长/步数/时间 | integrator / dt / nsteps / t |
+| 预处理 | 周期性/定义 | pbc / define |
+| 运行控制 | 初始速度生成/温度/随机种子 | gen-vel / gen-temp / gen-seed |
+| 输出控制 | 坐标/速度/力/能量/日志输出频率 | nstxout / nstvout / nstfout / nstenergy / nstlog |
+| 邻区搜索 | 列表更新频率/截断方案/列表半径 | nstlist / cutoff-scheme / rlist |
+| 静电 | 库仑类型/截断/PME网格间距/阶数 | coulombtype / rcoulomb / fourierspacing / pme-order |
+| VdW | 范德华类型/截断/色散校正 | vdwtype / rvdw / DispCorr |
+| Ewald | EWALD精度/实空间截断 | ewald-rtol |
+| 温度耦合 | 耦合方法/组/时间常数/参考温度 | tcoupl / tc-grps / tau-t / ref-t |
+| 压力耦合 | 耦合方法/类型/时间常数/参考压力/压缩系数 | pcoupl / pcoupltype / tau-p / ref-p / compressibility |
+| 约束 | 约束/算法/迭代/阶数 | constraints / constraint-algorithm / lincs-iter / lincs-order |
+| 能量最小化 | 容差/步长 | emtol / emstep |
+| 速度产生 | 产生/温度/种子 | gen-vel / gen-temp / gen-seed |
+| 墙 | 墙数/类型 | nwall / wall-type |
+| 牵引 | 牵引/坐标数/几何/组 | pull / pull-ncoords / pull-coord1-geometry |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §7.3, CC-BY compatible.

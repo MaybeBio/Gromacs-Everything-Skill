@@ -94,3 +94,32 @@ NA                   45
 - **Ch 8**: Force field overview
 - **Ch 12**: Common topology errors
 - **Ch 27**: File format specifications
+
+## 中文术语对照 (Chinese Terminology)
+
+**拓扑文件概述** (来自中文手册 §5.1): 拓扑文件 `*.top` 列出每个原子的**固定属性**(原子类型、电荷、键连), 区别于坐标文件 `*.gro` 中的**动态属性**(位置、速度、力)。
+
+| 中文 | English | 说明 |
+|------|---------|------|
+| 拓扑文件 | Topology file (.top) | 系统完整描述 |
+| 固定属性 | Fixed/static properties | 原子类型, 电荷, 键连 |
+| 动态属性 | Dynamic properties | 位置, 速度, 力 (在.gro/.trr中) |
+| 分子类型 | Moleculetype | `[ moleculetype ]` 定义分子名称和排除数 |
+| 原子类型 | Atom type | 比元素种类更多, 力场参数化的基本单位 |
+| 粒子类型 | Particle type | A(原子), S(壳层), V/D(虚拟位点) |
+| 包含文件 | Include file (.itp) | 模块化的拓扑片段 |
+| 力场目录 | Force field directory (.ff) | 完整的力场参数集 |
+| 残基数据库 | Residue database (.rtp) | pdb2gmx的构建块 |
+| 氢数据库 | Hydrogen database (.hdb) | 添加H原子的规则 |
+| 末端数据库 | Terminal database (.tdb) | N端/C端修补 |
+| 原子重命名 | Atom renaming (.r2b) | PDB→力场命名的转换 |
+| 虚拟位点数据库 | Virtual site database (.vsd) | 虚拟位点构建规则 |
+| 排除 | Exclusions | 排除已通过键合处理的非键对 |
+| 预处理指令 | Preprocessor directives | `#include`, `#ifdef`, `#define` |
+| 指令顺序 | Directive order | `.top`文件中各段的严格顺序 |
+| 对相互作用 | Pair interactions | 1-4相互作用, 列于 `[ pairs ]` |
+| 隐式溶剂化模型 | Implicit solvation | 连续介质模型, GBSA |
+| 特殊键 | Special bonds | pdb2gmx添加的额外连接 |
+| GMXLIB | GMXLIB | 力场文件搜索路径环境变量 |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §5.1-5.7, CC-BY compatible.

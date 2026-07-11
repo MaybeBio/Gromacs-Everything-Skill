@@ -80,3 +80,35 @@ V_c(r) = f · q_i·q_j / (ε_r · r)
 - **Ch 9**: MDP electrostatics parameters
 - **Ch 24**: Bonded interactions
 - **Ch 25**: Advanced interactions
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 非键相互作用 | Non-bonded interactions | 对势累加 (pair-additive), 满足中心对称 |
+| 色散项 | Dispersion term | C₆/r⁶ 项, 诱导偶极相互作用 |
+| 排斥项 | Repulsion term | C₁₂/r¹² 项, Pauli排斥 |
+| 组合规则 | Combination rules | 异种原子间LJ参数的推导方式 |
+| 截断距离 | Cutoff distance | 短程相互作用的计算范围 |
+| 反应场 | Reaction field | 截断外的连续介质近似 |
+| 库仑相互作用 | Coulomb interaction | 带电原子间的静电作用 |
+| 粒子网格Ewald | PME (Particle-Mesh Ewald) | FFT加速的长程静电方法 |
+| 自能校正 | Self-energy correction | Ewald求和中点电荷自身的相互作用 |
+| 色散校正 | Dispersion correction | 截断外LJ尾的解析校正 |
+
+**LJ势的两种等价表述**:
+- C-参数形式: V_LJ(r) = C^(12)/r^12 − C^(6)/r^6 (公式4.3)
+- σ/ε形式: V_LJ(r) = 4ε[(σ/r)^12 − (σ/r)^6] (公式4.5)
+- Verlet截断方案中, 通过将势能移动一个恒量使其在截断处为零
+
+**势能函数三部分** (来自§4):
+1. **非键项**: LJ或Buckingham + Coulomb或修正Coulomb
+2. **键合项**: 共价键伸缩, 键角弯曲, 反常二面角, 正常二面角 (基于固定列表)
+3. **约束项**: 位置约束, 角度约束, 距离约束, 方向约束, 二面角约束
+
+**力场组合规则**:
+| GROMOS | 几何平均 (C₆和C₁₂) |
+| AMBER/CHARMM | Lorentz-Berthelot (σ算术平均, ε几何平均) |
+| OPLS | 几何平均 (σ和ε都用几何平均) |
+
+Sources: GROMACS 5.0.2 中文手册 (李继存译) §4.1, CC-BY compatible.

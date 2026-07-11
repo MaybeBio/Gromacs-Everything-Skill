@@ -99,6 +99,29 @@ There is no domain decomposition for N nodes that is compatible with the given b
 5. Always check .log file after mdrun for warnings
 6. `GMXLIB` is the most common environment variable issue
 
+## Tutorial-Specific Troubleshooting (Lemkul)
+
+### Membrane System Crashes
+- **Intra-headgroup H-bonds collapsing**: Use position restraints or freeze groups on lipid headgroups during initial equilibration; reduce charges on headgroup H atoms temporarily
+- **Acyl chain overlap from InflateGRO**: Don't over-pack — if area/lipid is already target, stop shrinking
+- **Water/ion-headgroup overlap**: genion may place CL⁻ next to phosphate → explosion. Visualize after genion, manually remove problematic ions if needed
+- **Incorrect cutoff values**: Berger lipids parametrized with 1.0 nm cutoff; GROMOS96 with 0.9 nm electrostatics, 1.4 nm vdW. Mismatched cutoffs = wrong physics
+
+### Ligand Simulation Failures
+- **Coupling ligand to its own thermostat group** (`tc-grps = Protein JZ4 SOL CL`): Ligand (22 atoms) and ions (few atoms) lack sufficient DOF → thermostat instability → crash. Always group: `Protein_Ligand Water_and_ions`
+- **Wrong `#include` order for ligand .itp**: Must be AFTER parent force field but BEFORE `[ moleculetype ]`. Wrong order = undefined atom types → fatal error
+- **CGenFF topology not edited**: Server output is a standalone system topology. Must remove standalone parts (forcefield include, water, ions, system section) to convert to .itp
+
+### Free Energy Calculation Failures
+- **Simulation blows up at intermediate λ**: Missing or wrong soft-core parameters. Verify `sc-alpha=0.5`, `sc-power=1`, `sc-sigma=0.3`
+- **Decoupling vdW before charge**: Charged atoms approach at zero distance → infinite Coulomb force. Always discharge Coulomb first
+- **BAR fails with NaN**: Check for overlapping phase space between neighboring lambda windows — insufficient overlap = BAR can't converge. Increase number of windows
+
+### Umbrella Sampling Issues
+- **WHAM fails**: No histogram overlap between adjacent windows. Decrease window spacing or increase `pull-coord1-k`
+- **PMF not smooth**: Insufficient sampling per window. Run > 10 ns per window
+- **Pull reference group drifts**: Reference must be immobile — apply position restraints to reference group
+
 ## Connects To
 - **Ch 4**: Getting started workflow
 - **Ch 9**: MDP parameters
