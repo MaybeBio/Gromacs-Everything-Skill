@@ -183,7 +183,7 @@ git clone https://github.com/MaybeBio/Gromacs-Everything-Skill ~/.claude/skills/
 
 ### 在 Claude Code 中调用
 
-Skill 加载后，可直接在对话中查询或手动触发 `/gromacs-manual`：
+Skill 加载后，可直接在对话中查询或手动触发 `/Gromacs-Everything-Skill`：
 
 ```
 ▸ 我的蛋白质体系怎么选力场和水模型？
