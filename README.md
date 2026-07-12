@@ -174,16 +174,19 @@
 ### 安装
 
 ```bash
-# 方式 1: 使用 npx（推荐）
+# 方式 1: 手动克隆（推荐）
+# gromacs为skill名
+git clone https://github.com/MaybeBio/Gromacs-Everything-Skill ~/.claude/skills/gromacs
+
+# 方式 2: 使用 npx
+# 同样文件夹名即skill名 gromacs，但只有SKILL.md文件，其余reference全无
 npx skills add MaybeBio/Gromacs-Everything-Skill -a claude-code
 
-# 方式 2: 手动克隆
-git clone https://github.com/MaybeBio/Gromacs-Everything-Skill ~/.claude/skills/
 ```
 
 ### 在 Claude Code 中调用
 
-Skill 加载后，可直接在对话中查询或手动触发 `/Gromacs-Everything-Skill`：
+Skill 加载后，可直接在对话中查询或手动触发 `/gromacs`：
 
 ```
 ▸ 我的蛋白质体系怎么选力场和水模型？
@@ -296,8 +299,6 @@ Skill 加载后，可直接在对话中查询或手动触发 `/Gromacs-Everythin
 |----------|:---:|------|
 | **[+tutorial]** | 8 | ch05, ch08, ch12, ch16, ch21, ch25, ch28, ch32 |
 | **[+中文]** | 17 | ch09, ch17, ch18, ch19, ch20, ch21, ch22, ch23, ch24, ch25, ch26, ch27, ch29, ch30, ch31, ch32, ch39 |
-
----
 
 ---
 
