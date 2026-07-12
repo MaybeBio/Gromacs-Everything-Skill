@@ -1,5 +1,5 @@
 ---
-name: Gromacs-Everything-Skill
+name: gromacs
 description: "Knowledge base from \"GROMACS Documentation Release 2026.2\" by the GROMACS development team, enriched with Justin A. Lemkul's practical tutorial workflows (CC-BY 4.0) and Chinese manual theory notes. Use when applying GROMACS for molecular dynamics simulations: system preparation, force field selection, ligand parametrization, .mdp parameter tuning, mdrun performance optimization, free energy calculations (alchemical + umbrella sampling), membrane protein simulation, virtual sites, trajectory analysis, and troubleshooting."
 ---
 
