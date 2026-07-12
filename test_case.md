@@ -4,7 +4,7 @@
 用户      ❯ 
 
 ```python 
-/Gromacs-Everything-Skill 我手头上有1个CTCF蛋白质+zn配位金属离子+DNA序列，如何做模拟，好像gromacs中用不了ZAFF?
+/gromacs 我手头上有1个CTCF蛋白质+zn配位金属离子+DNA序列，如何做模拟，好像gromacs中用不了ZAFF?
 ```
 
 Skill     ❯
