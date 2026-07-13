@@ -1,12 +1,12 @@
 ---
 name: gromacs
-description: "Knowledge base from \"GROMACS Documentation Release 2026.2\" by the GROMACS development team, enriched with Justin A. Lemkul's practical tutorial workflows (CC-BY 4.0) and Chinese manual theory notes. Use when applying GROMACS for molecular dynamics simulations: system preparation, force field selection, ligand parametrization, .mdp parameter tuning, mdrun performance optimization, free energy calculations (alchemical + umbrella sampling), membrane protein simulation, virtual sites, trajectory analysis, and troubleshooting."
+description: "Knowledge base from \"GROMACS Documentation Release 2026.2\" by the GROMACS development team, enriched with Justin A. Lemkul's practical tutorial workflows and Chinese manual theory notes. Use when applying GROMACS for molecular dynamics simulations: system preparation, force field selection, ligand parametrization, .mdp parameter tuning, mdrun performance optimization, free energy calculations (alchemical + umbrella sampling), membrane protein simulation, virtual sites, trajectory analysis, and troubleshooting."
 ---
 
 <!-- argument-hint: [topic, framework name, or chapter number] -->
 
 # GROMACS Documentation Release 2026.2
-**Author**: GROMACS development team | **Enriched with**: Justin A. Lemkul tutorials (CC-BY 4.0), Chinese manual (GROMACS 2019.6 中文译版) | **Chapters**: 40 | **Generated**: 2026-07-13
+**Author**: GROMACS development team | **Enriched with**: Justin A. Lemkul tutorials , Chinese manual (GROMACS 2019.6 中文译版) | **Chapters**: 40 | **Generated**: 2026-07-13
 
 ## How to Use This Skill
 
