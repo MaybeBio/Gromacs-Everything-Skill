@@ -44,3 +44,25 @@ Common GROMACS questions organized by topic: installation, system preparation, s
 - **Ch 5**: System preparation
 - **Ch 9**: MDP parameters
 - **Ch 12**: Common errors
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 常见问题 | Frequently Asked Questions (FAQ) | 按主题分类 |
+| 安装问题 | installation questions | 编译器/MPI/精度 |
+| 系统准备 | system preparation | 溶剂/拓扑/文件格式 |
+| 模拟方法 | simulation methodology | 耦合/约束/重启 |
+| 参数化 | parameterization | 力场/过渡金属 |
+| 分析与可视化 | analysis & visualization | 轨迹显示/PBC |
+| 混合精度 | mixed precision | 默认推荐使用 |
+| 单点能 | single-point energy | -rerun 选项计算 |
+| 缺失原子 | missing atoms | 需外部程序添加 |
+| 总电荷非整数 | non-integer total charge | 浮点运算误差 |
+| 温度耦合组 | temperature coupling group | 避免过小组 |
+| 力场不可混合 | force fields are not mixable | 一致性原则 |
+| 分子成键可视化 | bond visualization | 与拓扑定义可能不同 |
+
+**关键概念**: 中文手册中的 FAQ 按五大主题组织：安装问题、系统准备和预处理、模拟方法、参数化与力场、分析与可视化。关键经验包括：不需要使用 MPI 编译所有实用程序（只有 mdrun 支持 MPI）；默认混合精度即可满足大多数需求；溶剂盒子坐标文件位于 \$GMXDIR/share/gromacs/top 目录中；不要将少量离子耦合到它们自己的温度耦合组；共轭梯度最小化不能使用约束；力场参数不可混用；可视化时看到的孔洞只是周期性边界的折叠效应，使用 trjconv 可以修复。
+
+Sources: GROMACS 2019.6 中文译版 (§3.4)

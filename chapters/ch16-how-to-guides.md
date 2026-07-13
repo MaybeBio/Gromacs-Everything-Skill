@@ -62,6 +62,31 @@ gmx solvate -cp box.gro -cs solvent_box.gro -o solv.gro -p topol.top
 - **Ch 28**: Pull code details
 - **Ch 29**: AWH details
 
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 操作指南 | how-to guides | 具体任务教程 |
+| 添加残基 | adding a residue | 扩展力场 |
+| 力场修改 | force field modification | 复制 .ff 目录修改 |
+| 水溶剂化 | water solvation | gmx solvate |
+| 非水溶剂 | non-water solvent | 自建溶剂盒子 |
+| 混合溶剂 | mixed solvent | 多种溶剂分子 |
+| 二硫键 | disulfide bonds | -ss 自动检测 |
+| 膜模拟 | membrane simulations | CHARMM36 推荐 |
+| 半各向同性 | semi-isotropic | pcoupltype 选项 |
+| 序参量 | order parameter | 碳链尾部的取向 |
+| 膜密度剖面 | membrane density profile | gmx density |
+| 脂质侧向扩散 | lipid lateral diffusion | gmx msd -lateral |
+| 脂质转变温度 | lipid transition temperature (Tm) | 模拟温度需高于 Tm |
+| 面积/脂质 | area per lipid | 表征膜堆积质量 |
+| 3位点水模型 | 3-site water model | SPC, TIP3P |
+| 4位点水模型 | 4-site water model | TIP4P |
+
+**关键概念**: 中文手册提供了从初学者到高级用户的完整操作指南。主要内容包括：向力场中添加残基（修改 .rtp 文件）、水/非水/混合溶剂体系的溶剂化、二硫键的建立、以及膜模拟的完整流程。膜模拟需要特殊设置：半各向同性压力耦合（pcoupltype=semiisotropic）、正确的温度耦合组分组、以及模拟温度高于脂质转变温度。中文手册还涵盖了力场修改的标准模式：复制原有 .ff 目录，添加新原子类型和非键参数，添加成键参数，移除不兼容的旧条目。
+
+Sources: GROMACS 2019.6 中文译版 (§4, §3.8-3.10, §5.8.17)
+
 ## Membrane Protein Construction: InflateGRO Method
 
 **Note**: This historical method (Lemkul tutorial, CC-BY 4.0) teaches force field internals. For CHARMM36 production systems, use [CHARMM-GUI](http://www.charmm-gui.org) instead.
@@ -131,3 +156,4 @@ For liquid-liquid interfaces (e.g., water/cyclohexane):
 `gmx insert-molecules -f system.gro -ci solvent.gro -nmol 500 -try 50 -radius 0.12`
 - `-try`: attempts per molecule (increase if placement fails in crowded box)
 - `-radius`: vdW clash detection threshold
+

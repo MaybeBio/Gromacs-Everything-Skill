@@ -2,7 +2,7 @@
 
 # GROMACS 2026.2 · Code-Writing Skill
 
-> *官方手册蒸馏 · 40 章结构化知识库 · Lemkul 教程融合 · 中文理论映射*
+> *官方手册蒸馏 · 40 章结构化知识库 · Lemkul 教程融合 · 中文全译版映射*
 >
 > `GROMACS 2026.2` · `分子动力学模拟` · `实操优先` · `全量可溯源`
 
@@ -10,7 +10,7 @@
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-6C47FF)](https://claude.ai/code)
 [![Chapters](https://img.shields.io/badge/Chapters-40-6495ED)](chapters/)
 [![Tutorials](https://img.shields.io/badge/Lemkul%20Tutorials-8%20integrated-FF6B6B)](https://www.mdtutorials.com/gmx/)
-[![Chinese](https://img.shields.io/badge/中文理论-17%20chapters-FFA500)](#知识体系)
+[![Chinese](https://img.shields.io/badge/中文术语-40%20chapters-FFA500)](#知识体系)
 [![License](https://img.shields.io/badge/License-LGPL%202.1%2B-blue)](https://www.gnu.org/licenses/lgpl-2.1.html)
 
 | <img src="image-1.png" width="350"> | <img src="image.png" width="320"> |
@@ -18,7 +18,7 @@
 
 <br>
 
-**GROMACS 2026.2 Reference Manual (953 页) + Justin Lemkul 9 个实操教程 + 中文手册理论映射 —— 以实操为中心的分子动力学技术参考**
+**GROMACS 2026.2 Reference Manual (953 页) + Justin Lemkul 9 个实操教程 + GROMACS 2019.6 中文教程 —— 以实操为中心的分子动力学技术参考**
 
 手册为骨 · 教程为肉 · 全量可溯源
 
@@ -28,7 +28,7 @@
 >
 > [Official 2026.2 Manual](./books/manual-2026.2.pdf) | [Online Version](https://manual.gromacs.org/2026.2/manual-2026.2.pdf) 
 >
-> [Justin Lemkul Tutorials](./books/mdtutorials/) | [中文手册 v5.0.2](./books/GROMACS中文手册%205.0.2%20标签版.pdf)
+> [Justin Lemkul Tutorials](./books/mdtutorials/) | [中文手册](./books/gromacs中文手册/)
 > 
 > [Skill](./SKILL.md) | [Cheatsheet](./cheatsheet.md) | [Glossary](./glossary.md) | [Patterns](./patterns.md)
 
@@ -56,15 +56,15 @@
 
 ## 概述
 
-本仓库将 [GROMACS 2026.2 Reference Manual (953 页)](https://manual.gromacs.org/2026.2/manual-2026.2.pdf) 与 [Justin Lemkul 的 9 个实操教程](http://www.mdtutorials.com/gmx/) 以及 [GROMACS 5.0.2 中文手册](https://jerkwin.github.io/9999/10/31/GROMACS%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/) 的理论部分蒸馏为一个**统一的、结构化的** Claude Code Skill 知识库，覆盖从 PDB 准备、力场选择、系统构建，到能量最小化、NVT/NPT 平衡、生产 MD、轨迹分析、自由能计算、增强采样、配体参数化、膜蛋白模拟、虚拟位点的完整 GROMACS 工作流 —— 共 **40 章**。
+本仓库将 [GROMACS 2026.2 Reference Manual (953 页)](https://manual.gromacs.org/2026.2/manual-2026.2.pdf) 与 [Justin Lemkul 的 9 个实操教程](http://www.mdtutorials.com/gmx/) 以及 [GROMACS 2019.6 中文教程](./books/gromacs中文手册/) 蒸馏为一个**统一的、结构化的** Claude Code Skill 知识库，覆盖从 PDB 准备、力场选择、系统构建，到能量最小化、NVT/NPT 平衡、生产 MD、轨迹分析、自由能计算、增强采样、配体参数化、膜蛋白模拟、虚拟位点的完整 GROMACS 工作流 —— 共 **40 章**。
 
 **核心设计理念**：这是一个**代码编写与实操技能**。每章以「怎么做」为核心，精确到命令行和 .mdp 参数级别。Lemkul 教程的实操工作流**已融入**对应的官方手册章节中（而非独立追加），中文手册的理论内容已**逐章映射**到英文手册对应章节。
 
 | 数据源 | 角色 | 规模 | 特色 |
 |--------|------|------|------|
 | GROMACS 2026.2 Reference Manual | 骨架 —— 完整命令参考、.mdp 参数全表、算法方法论 | 953 页 | 按主题组织，涵盖所有 gmx 工具和理论背景 |
-| Justin Lemkul 实操教程 | 血肉 —— 可复用的端到端 MD 工作流 | 8 个教程 (68 个步骤文件) | CC-BY 4.0, 分步实操, 完整命令序列, 常见陷阱标注 |
-| 中文手册 v5.0.2 | 脉络 —— 中文理论术语与推导 | 21 份翻译稿 | 中英术语对照, 公式推导, 算法详述 |
+| Justin Lemkul 实操教程 | 血肉 —— 可复用的端到端 MD 工作流 | 8 个教程 (68 个步骤文件) | 分步实操, 完整命令序列, 常见陷阱标注 |
+| GROMACS 2019.6 中文教程 | 脉络 —— 全量中文术语与理论推导 | 全手册翻译 | 中英术语对照, 公式推导, 算法详述, 40 章全覆盖 |
 
 ---
 
@@ -75,34 +75,30 @@
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                 GROMACS 2026.2 · Code-Writing Skill                       │
-│              40 章 · Lemkul 教程融合 · 17 章中文理论映射                    │
+│              40 章 · Lemkul 教程融合 · 40 章中文术语全覆盖                   │
 ├────────────────────┬───────────────────────┬──────────────────────────────┤
 │  实用指南 (7 章)     │  参考手册 (9 章)        │  理论背景 (11 章)              │
 ├────────────────────┼───────────────────────┼──────────────────────────────┤
-│ ch01 下载与安装       │ ch08 力场 [+tutorial]   │ ch17 引言 [+中文]              │
-│ ch02 安装指南         │   CGenFF 配体参数化      │ ch18 定义与单位 [+中文]        │
-│ ch03 已知问题         │ ch09 MDP 参数 [+中文]    │ ch19 PBC & MD [+中文]          │
-│ ch04 快速入门         │ ch10 mdrun 特性          │   蛙跳/Verlet/Trotter 中文推导  │
-│ ch05 体系准备 [+tutorial]│ ch11 性能调优            │ ch20 约束与耦合 [+中文]         │
-│   Lysozyme 12步工作流 │ ch12 常见错误 [+tutorial] │   SHAKE/LINCS/恒温器/压浴      │
-│ ch06 长时模拟         │   膜/配体/FE/伞形故障排查  │ ch21 自由能 [+tutorial +中文]   │
-│ ch07 FAQs            │ ch13 命令参考             │   慢增长/TI/λ向量 + 实操工作流 │
-│                      │ ch14 术语表               │ ch22 并行化 [+中文]            │
-│                      │ ch15 验证                 │ ch23 非键相互作用 [+中文]       │
-│                      │ ch16 How-To [+tutorial]   │   LJ/Buckingham/Coulomb/PME   │
-│                      │   膜蛋白/双相系统构建       │ ch24 键合相互作用 [+中文]       │
-│                      │                          │ ch25 高级相互作用 [+tutorial +中文]│
-│                      │                          │   虚拟位点 CO₂ 实操/软核理论  │
-│                      │                          │ ch26 拓扑 [+中文]              │
-│                      │                          │ ch27 文件格式 [+中文]          │
+│ ch01 下载与安装       │ ch08 力场 [+tutorial]   │ ch17 引言                     │
+│ ch02 安装指南         │   CGenFF 配体参数化      │ ch18 定义与单位               │
+│ ch03 已知问题         │ ch09 MDP 参数            │ ch19 PBC & MD                 │
+│ ch04 快速入门         │ ch10 mdrun 特性          │ ch20 约束与耦合               │
+│ ch05 体系准备 [+tutorial]│ ch11 性能调优            │ ch21 自由能 [+tutorial]        │
+│   Lysozyme 12步工作流 │ ch12 常见错误 [+tutorial] │ ch22 并行化                   │
+│ ch06 长时模拟         │   膜/配体/FE/伞形故障排查  │ ch23 非键相互作用             │
+│ ch07 FAQs            │ ch13 命令参考             │ ch24 键合相互作用             │
+│                      │ ch14 术语表               │ ch25 高级相互作用 [+tutorial]  │
+│                      │ ch15 验证                 │ ch26 拓扑                    │
+│                      │ ch16 How-To [+tutorial]   │ ch27 文件格式                 │
+│                      │   膜蛋白/双相系统构建       │                             │
 ├────────────────────┼───────────────────────┼──────────────────────────────┤
 │  专项方法 (4 章)     │  运行与分析 (4 章)       │  附录 (5 章)                   │
 ├────────────────────┼───────────────────────┼──────────────────────────────┤
-│ ch28 自由能与牵引     │ ch09 MDP 参数 [+中文]    │ ch35 参考文献                   │
-│   [+tutorial]       │ ch31 运行参数 [+中文]     │ ch36 开发者指南                │
-│   伞形采样 4 步工作流  │ ch32 分析 [+tutorial +中文]│ ch37 Doxygen                  │
-│ ch29 AWH [+中文]     │   分析工作流 + 中文术语    │ ch38 发布说明                   │
-│ ch30 高级方法 [+中文] │ ch39 高级 MDP [+中文]    │ ch39 高级 MDP [+中文]          │
+│ ch28 自由能与牵引     │ ch31 运行参数              │ ch35 参考文献                   │
+│   [+tutorial]       │ ch32 分析 [+tutorial]    │ ch36 开发者指南                │
+│   伞形采样 4 步工作流  │ ch39 高级 MDP            │ ch37 Doxygen                  │
+│ ch29 AWH             │                          │ ch38 发布说明                   │
+│ ch30 高级方法         │                          │ ch40 教程资源                   │
 │   QM/MM/PLUMED/NNP  │                          │ ch40 教程资源                   │
 └────────────────────┴───────────────────────┴──────────────────────────────┘
 ```
@@ -150,12 +146,12 @@
 │   └── ... (40 files total, ~3,700 lines)
 │
 ├── patterns.md                        # 20+ 标准 MD 工作流模式 (含 Lemkul 教程模式)
-├── cheatsheet.md                      # 速查：决策规则 · 热浴/压浴矩阵 · 教程命令 · 膜参数
-├── glossary.md                        # ~150 GROMACS 核心术语 (含教程+中文), 附章节引用
+├── cheatsheet.md                      # 速查：决策规则 · 热浴/压浴矩阵 · 教程命令 · 膜参数 · 中文参数速查
+├── glossary.md                        # ~150 GROMACS 核心术语 (含中文扩展), 附章节引用
 │
 └── books/                             # 原始资料
     ├── manual-2026.2.pdf              # GROMACS 2026.2 Reference Manual (953 页)
-    ├── GROMACS中文手册 5.0.2 标签版.pdf  # 中文手册 (李继存译)
+    ├── gromacs中文手册/                 # GROMACS 2019.6 中文教程（全手册翻译）
     └── mdtutorials/                   # Justin Lemkul 8 个实操教程 (Markdown)
         ├── 02_Lysozyme_in_Water/      # 溶菌酶基础教程 (12 步)
         ├── 03_Membrane_Protein/       # 膜蛋白 KALP15 in DPPC (11 步)
@@ -216,7 +212,7 @@ Skill 加载后，可直接在对话中查询或手动触发 `/gromacs`：
 | 自由能方法论 | `chapters/ch21-algorithms-free-energy.md` | TI/BAR 理论 + 两步解耦工作流 |
 | 错误排查 | `chapters/ch12-common-errors.md` | 膜/配体/FE/伞形故障 3-4 种 + 修复 |
 | 术语定义 | `glossary.md` | 精确定义 + 归属章节 |
-| 中文理论 | `ch17-ch27, ch29-ch32, ch39` | 每章附「中文术语对照」表 |
+| 中文理论 | 全部 40 章 | 每章附「中文术语对照」表 |
 | 系统学习 | `SKILL.md` → `chapters/*.md` | Core Frameworks → Chapter Index → Topic Index |
 
 ---
@@ -234,7 +230,7 @@ Skill 加载后，可直接在对话中查询或手动触发 `/gromacs`：
 | **Code Examples** | 精确命令序列 + .mdp 参数配置 |
 | **Practical Workflow** (tutorial 章) | 完整的端到端实操流程（命令 + 决策点 + 验证标准） |
 | **Anti-patterns** | 常见错误模式及原因 |
-| **中文术语对照** (中文理论章) | 中英术语对照表，附公式来源 |
+| **中文术语对照** (所有章) | 中英术语对照表，附公式来源 |
 | **Key Takeaways** | 3-7 条必须记住的要点 |
 | **Connects To** | 与其它章节的交叉引用链 |
 
@@ -242,27 +238,28 @@ Skill 加载后，可直接在对话中查询或手动触发 `/gromacs`：
 
 ## 三大知识源
 
-| 维度 | GROMACS 2026.2 Manual | Lemkul 实操教程 | 中文手册 v5.0.2 |
+| 维度 | GROMACS 2026.2 Manual | Lemkul 实操教程 | GROMACS 2019.6 中文教程 |
 |------|:---:|:---:|:---:|
-| **定位** | 完整命令参考与算法理论 | 分步实操指南 (CC-BY 4.0) | 中文理论推导与术语 |
-| **规模** | 953 页 PDF | 8 个教程 (68 个步骤文件) | ~300 页翻译稿 |
-| **内容特色** | 所有 gmx 工具、.mdp 参数、算法详述、数学公式 | 完整命令序列、参数选择理由、错误陷阱标注、可执行工作流 | 公式推导、算法中文解释、中英术语对照 |
-| **覆盖** | 40 章全主题覆盖 | 8 个关键场景 (基础→膜蛋白→配体→自由能→伞形→虚拟位点) | 8 章全映射 |
-| **最适合** | 查命令 flag 和 .mdp 变量的精确含义 | 跟着做一遍完整的 MD 模拟 | 理解算法原理的中文解释 |
-| **融合方式** | 每章独立知识单元 | **已融入**对应官方章节 (ch05/08/16/21/25/28/32) | **已逐章映射**到英文手册 (17 个章节含中文术语表) |
+| **定位** | 完整命令参考与算法理论 | 分步实操指南  | 全手册中文翻译与术语 |
+| **规模** | 953 页 PDF | 8 个教程 (68 个步骤文件) | ~19,000 行全手册翻译 |
+| **内容特色** | 所有 gmx 工具、.mdp 参数、算法详述、数学公式 | 完整命令序列、参数选择理由、错误陷阱标注、可执行工作流 | 公式推导、算法中文解释、中英术语对照、40 章全覆盖 |
+| **覆盖** | 40 章全主题覆盖 | 8 个关键场景 (基础→膜蛋白→配体→自由能→伞形→虚拟位点) | 全部 40 章术语与概念 |
+| **最适合** | 查命令 flag 和 .mdp 变量的精确含义 | 跟着做一遍完整的 MD 模拟 | 快速查找中英术语对应关系 |
+| **融合方式** | 每章独立知识单元 | **已融入**对应官方章节 (ch05/08/16/21/25/28/32) | **已全覆盖**至全部 40 章中文术语对照表 |
 
-### 中文手册逐章映射
+### 中文手册逐章映射（GROMACS 2019.6 中文教程）
 
-| 中文手册 (v5.0.2) | → 英文章节 | 融入内容 |
+| 中文手册章节 | → 英文章节 | 融入内容 |
 |---|---|---|
-| 第一章 简介 | → ch17 [+中文] | 计算化学/MD/能量最小化中英术语 |
-| 第二章 定义与单位 | → ch18 [+中文] | 符号约定、MD 单位体系、约化单位 |
-| 第三章 算法 (18 小节) | → ch19-22 [+中文] | 蛙跳/Verlet/Trotter、恒温器/压浴、TI/慢增长、区域分解 |
-| 第四章 相互作用函数和力场 (10 小节) | → ch23-25, ch08 [+中文] | LJ/Buckingham/Coulomb、键合势、虚拟位点理论、力场家族 |
-| 第五章 拓扑 (7 小节) | → ch26-27 [+中文] | 拓扑文件结构、.itp/.rtp/.hdb/.tdb、文件类型全表 |
-| 第六章 专题 (14 小节) | → ch28-30 [+中文] | PMF/牵引/AWH/QM-MM/AdResS/MARTINI/NNP/FMM |
-| 第七章 运行参数和程序 | → ch09, ch31, ch39 [+中文] | MDP 参数分类、文件类型、高级参数 |
-| 第八章 分析 | → ch32 [+tutorial+中文] | 分析工作流 + 氢键判据 + 14 个分析术语 |
+| §5.1-5.2 前言与简介 | → ch17 | 计算化学/MD/能量最小化中英术语 |
+| §5.3 定义与单位 | → ch18 | 符号约定、MD 单位体系、约化单位 |
+| §5.4 算法 (15 小节) | → ch19-22 | 蛙跳/Verlet/Trotter、恒温器/压浴、TI/慢增长、区域分解 |
+| §5.5 相互作用函数 (10 小节) | → ch23-25, ch08 | LJ/Buckingham/Coulomb、键合势、虚拟位点理论、力场家族 |
+| §5.6 拓扑 (7 小节) | → ch26-27 | 拓扑文件结构、.itp/.rtp/.hdb/.tdb、文件类型全表 |
+| §5.8 专题 (17 小节) | → ch28-30 | PMF/牵引/AWH/QM-MM/MiMiC/IMD/膜嵌入 |
+| §5.9 运行参数和程序 | → ch09, ch31, ch39 | MDP 参数分类、文件类型、高级参数 |
+| §3.1-3.2, §3.7 用户指南 | → ch01-16 | 下载、安装、快速入门、体系准备、FAQ、命令参考 |
+| §3.3-3.10 维续与错误处理 | → ch06, ch12 | 长期模拟续跑、常见错误诊断 |
 
 ### 可溯源性
 
@@ -280,7 +277,7 @@ Skill 加载后，可直接在对话中查询或手动触发 `/gromacs`：
 三条追溯链路：
 1. **`SKILL.md` 主题索引** → 话题 → 对应章节
 2. **每章 `Connects To`** → 交叉引用其它相关章节
-3. **books/ 原始资料** → PDF 手册 + mdtutorials/ 原始教程文件
+3. **books/ 原始资料** → PDF 手册 + mdtutorials/ 原始教程文件 + 中文译版
 
 
 ---
@@ -291,14 +288,14 @@ Skill 加载后，可直接在对话中查询或手动触发 `/gromacs`：
 |------|:---:|:---:|:---:|
 | GROMACS 2026.2 Reference Manual | 953 页 | 40 章 (全量 API + MDP 参数) | **~95%** |
 | Lemkul 实操教程 | 8 个教程 | 全部融入对应官方章节 | **100%** |
-| 中文手册 v5.0.2 | 8 章 (21 份翻译稿) | 逐章映射至英文手册 (17 章含中文术语) | **100%** |
+| GROMACS 2019.6 中文教程 | 全手册翻译 | 中文术语/概念覆盖全部 40 章 | **100%** |
 
 ### 富化标注统计
 
 | 标注类型 | 章节数 | 章节列表 |
 |----------|:---:|------|
 | **[+tutorial]** | 8 | ch05, ch08, ch12, ch16, ch21, ch25, ch28, ch32 |
-| **[+中文]** | 17 | ch09, ch17, ch18, ch19, ch20, ch21, ch22, ch23, ch24, ch25, ch26, ch27, ch29, ch30, ch31, ch32, ch39 |
+| **[+中文]** | 40 | 全部 40 章（每章附「中文术语对照」表） |
 
 ---
 
@@ -377,7 +374,7 @@ Skill 加载后，可直接在对话中查询或手动触发 `/gromacs`：
 | 资源 | 英文 | 链接 |
 |------|------|------|
 | Justin Lemkul 教程 | MD Tutorials | [mdtutorials.com/gmx](http://www.mdtutorials.com/gmx) |
-| Gromacs 中文教程 |  | https://jerkwin.github.io/9999/10/31/GROMACS%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/ | 
+| Gromacs 中文教程（旧版） |  | https://jerkwin.github.io/9999/10/31/GROMACS%E4%B8%AD%E6%96%87%E6%95%99%E7%A8%8B/ | 
 
 ---
 
@@ -396,12 +393,13 @@ GROMACS 官方用户指南 -> 第三方教程（Justin Lemkul）模拟 -> 实操
 ## Skill更新说明
 
 - 原始skill（v0.1.0） 仅蒸馏官方操作手册，重点在于api查询，技术手册查询辅助定位
-- 更新后skill（v0.2.0起） 添加一些第三方教程，侧重于实践导向；同时增加了中文手册资料（⚠️中文教程版本 更新未追及官方英文文档，待后续开源版中文教程资料更新）
+- 更新后skill（v0.2.0起） 添加一些第三方教程，侧重于实践导向；同时增加了中文手册资料（⚠️ 中文教程版本 更新未追及官方英文文档，待后续开源版中文教程资料更新） 
+- v0.3.0 增加了GROMACS 2019.6 中文教程（全手册翻译），覆盖全部40章中文术语对照
 ---
 
 <div align="center">
 
-*基于 GROMACS 2026.2 Reference Manual + Justin Lemkul 8 个实操教程 + 中文手册 v5.0.2 理论蒸馏。*
+*基于 GROMACS 2026.2 Reference Manual + Justin Lemkul 8 个实操教程 + GROMACS 2019.6 中文教程。*
 *实操优先，精确到命令和 .mdp flag 级别，全量可溯源。*
 
 [GROMACS 官方网站](https://www.gromacs.org) ·

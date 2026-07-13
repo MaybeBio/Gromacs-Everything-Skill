@@ -73,6 +73,30 @@ gmx genion -s ions.tpr -o solv_ions.gro -p topol.top -pname NA -nname CL -neutra
 - **Ch 8**: Force field details
 - **Ch 16**: Advanced preparation (membranes, non-water solvents)
 
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 系统准备 | system preparation | 模拟前置步骤 |
+| 力场选择 | force field selection | AMBER/CHARMM/GROMOS/OPLS |
+| 水模型 | water model | SPC/TIP3P/TIP4P 等 |
+| 盒子类型 | box type | cubic/dodecahedron/octahedron |
+| 菱形十二面体 | rhombic dodecahedron | 节省 29% 溶剂 |
+| 截角八面体 | truncated octahedron | 节省 23% 溶剂 |
+| 溶剂化 | solvation | 使用 gmx solvate |
+| 离子添加 | ion addition | gmx genion |
+| 能量最小化 | energy minimization (EM) | 消除结构异常 |
+| 预平衡 | equilibration | NVT 后 NPT |
+| 位置限制 | position restraints | 固定溶质的参考位置 |
+| 范德华半径 | van der Waals radii | vdwradii.dat 文件 |
+| 数据库文件 | database files | .dat 格式帮助文件 |
+| 质子化状态 | protonation states | 由 pH 决定 |
+| 副本交换 | replica exchange (REMD) | 增强采样方法 |
+
+**关键概念**: 系统准备的正确性直接影响模拟的成败。核心原则是力场和水模型必须匹配（如 AMBER+TIP3P, GROMOS+SPC）。盒子类型对性能影响显著 -- 对球形溶质使用菱形十二面体可节省约 29% 的 CPU 时间。离子处理应先中和体系（-neutral），再根据需要添加生理浓度（~0.15 M）。GROMACS share/top 目录中的 .dat 数据库文件可复制到工作目录进行定制，程序优先加载本地副本。能量最小化是必须步骤，至少运行至 Fmax < 1000 kJ/mol/nm，然后进行 NVT 和 NPT 预平衡直到温度和密度稳定。
+
+Sources: GROMACS 2019.6 中文译版 (§3.2)
+
 ## Practical Workflow: Lysozyme in Water (Lemkul Tutorial)
 
 This 12-step pipeline is the canonical GROMACS workflow. Each step is explained in detail in the original tutorial by [Justin Lemkul](http://www.mdtutorials.com/gmx/lysozyme/index.html) (CC-BY 4.0).

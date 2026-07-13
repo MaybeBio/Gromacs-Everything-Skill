@@ -179,21 +179,43 @@ In XmGrace: Data → Transformations → Running Averages → select dataset →
 
 ## 中文术语对照 (Chinese Terminology)
 
-| 中文 | English | 说明 |
-|------|---------|------|
-| 分析/轨迹分析 | Analysis / Trajectory analysis | 对MD轨迹进行计算 |
-| 均方根偏差 | RMSD | 与参考结构的偏差 |
-| 均方根涨落 | RMSF | 每个原子/残基的柔性 |
-| 回旋半径 | Radius of gyration (Rg) | 蛋白质紧致度的度量 |
-| 径向分布函数 | Radial distribution function (RDF/g(r)) | 溶剂/离子结构 |
-| 均方位移 | Mean square displacement (MSD) | 扩散系数 |
-| 氢键 | Hydrogen bonds | 供体-受体距离+角度判据 |
-| 聚类分析 | Clustering | GROMOS方法, RMSD基 |
-| 二级结构 | Secondary structure | DSSP算法 |
-| 主成分分析 | PCA / Essential dynamics | 原子涨落的协方差分析 |
-| 能量分析 | Energy analysis | `gmx energy` 提取各能量项 |
-| 二面角分析 | Dihedral analysis | Ramachandran图, χ角 |
-| 相关性函数 | Correlation functions | 自相关和交叉相关 |
-| 曲线拟合 | Curve fitting | `gmx analyze -f data.xvg -fit` |
+| 中文 | English | Notes |
+|------|---------|-------|
+| 轨迹分析 | Trajectory analysis | 对MD轨迹的各类计算分析 |
+| 索引组 | Index groups | 分析工具操作的对象原子集 |
+| 均方根偏差 | RMSD | 拟合(通常骨架)后与参考结构的偏差 |
+| 均方根涨落 | RMSF | 每个原子/残基的时间平均涨落 |
+| 回旋半径 | Radius of gyration (Rg) | Rg² = Σ mi·ri² / Σ mi，度量紧致度 |
+| 径向分布函数 | Radial distribution function (RDF, g(r)) | 对相关函数，表征溶剂/离子结构 |
+| 均方位移 | Mean square displacement (MSD) | D = MSD/(6t) 由Einstein关系求扩散系数 |
+| 氢键 | Hydrogen bonds | 供体-受体距离≤0.35nm，供体-受体-H角≤30° |
+| 聚类分析 | Clustering | GROMOS方法(RMSD基，确定性聚类) |
+| 二级结构 | Secondary structure | DSSP算法，需dssp二进制 |
+| 主成分分析/本征动力学 | PCA / Essential dynamics | 协方差对角化，前2-3个PC捕获>70%方差 |
+| 能量分析 | Energy analysis | 提取势能/动能/总能量/温度/压力/体积/密度 |
+| 拉氏图 | Ramachandran plot | φ/ψ骨架二面角分布 |
+| χ角 | Chi angles | 侧链旋转异构体分析 |
+| 相关性函数 | Correlation functions | 自相关(氢键寿命/偶极弛豫)和交叉相关 |
+| 曲线拟合 | Curve fitting | 指数/多项式/用户自定义函数拟合 |
+| PBC校正 | PBC correction | trjconv -pbc mol -center 使分子完整化 |
+| 平滑处理 | Running averages | XmGrace/数据分析中减少噪声保持趋势 |
+| 距离 | Distance analysis | `gmx distance` 计算两原子/组间距离 |
+| 角度 | Angle analysis | `gmx angle` 计算键角分布 |
+| SASA | Solvent accessible surface | 溶剂可及表面积 |
+| 序参数 | Order parameter | 脂质尾链序参数 -Scd |
+| 密度分布 | Density profile | 沿某轴的数密度/质量密度剖面 |
+| 介电常数 | Dielectric constant | 由偶极矩涨落计算 |
+| 自由能形貌图 | Free energy landscape | 沿2个CV的PMF形貌 |
+| 回转张量 | Gyration tensor | 蛋白质形状的各向异性 |
+| 键长/键角/二面角分布 | Bond/angle/dihedral distributions | 键合结构参数的统计分布 |
 
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §8 (分析), CC-BY compatible.
+**关键概念**:
+- 分析前必须PBC校正: `gmx trjconv -pbc mol -center`，否则蛋白质可能跨边界断裂
+- RMSD是退化度量(degenerate metric)，不能单独评估收敛性；稳定蛋白Cα RMSD ~0.09±0.01nm
+- 氢键判据: GROMACS使用donor-H距离(≤0.35nm)和donor-acceptor-H角(≤30°)，非传统DHA角
+- `gmx hbond` 使用MainChain+H组而非Backbone(Backbone不含H!)
+- MSD线性拟合需选择合适区域，通常舍弃开头和末尾
+- GROMOS聚类: RMSD截止0.2nm，确定性算法按RMSD排序选取代表结构
+- PCA分析: covar计算协方差+对角化，anaeig投影轨迹到主成分
+
+Sources: GROMACS 2019.6 中文译版

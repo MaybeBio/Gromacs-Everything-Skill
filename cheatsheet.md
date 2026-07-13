@@ -172,3 +172,116 @@ gmx bar -f md*_dhdl.xvg -o bar.xvg
 
 # Umbrella sampling analysis (ch28)
 gmx wham -it tpr-files.dat -if pullf-files.dat -o profile.xvg -hist histo.xvg
+```
+
+---
+
+## 中文参数速查 (Chinese Parameter Quick Reference)
+
+_Sources: GROMACS 2019.6 中文译版_
+
+### 积分器选择 (Integrator Selection) [中文版]
+| 目标 | 积分器 | 原因 |
+|---|---|---|
+| 成品MD（标准） | `md` (蛙跳式) | 快速、稳定、默认 |
+| 成品MD（Nose-Hoover） | `md-vv` (Velocity Verlet) | 更好的恒温器耦合 |
+| 能量最小化 | `steep` (最陡下降) → `cg` (共轭梯度) | 稳健的初步松弛 |
+| 简正模式分析 | `nm` | 需双精度编译 |
+| 随机动力学 | `sd` (Langevin) | 隐性溶剂适用 |
+
+### 温度耦合决策规则 (Thermostat Selection) [中文版]
+| 阶段 | 恒温器 | `tau-t` | 注 |
+|---|---|---|---|
+| 预平衡（快速松弛） | `Berendsen` | 0.1 ps | 不产生正确正则系综 |
+| NVT平衡 | `V-rescale` (速度重缩放) | 0.1 ps | 正确正则系综 |
+| 成品模拟 | `V-rescale` 或 `Nose-Hoover` | 1.0-2.0 ps | Nosé-Hoover扩展系综 |
+
+### 压力耦合决策规则 (Barostat Selection) [中文版]
+| 阶段 | 恒压器 | `tau-p` | 注 |
+|---|---|---|---|
+| 初始盒子松弛 | `Berendsen` | 2.0 ps | 快速接近目标压力 |
+| 成品NPT | `Parrinello-Rahman` | 5.0 ps | 正确NPT系综 |
+| 膜模拟 | 半各向同性 (semiisotropic) | xy和z独立 | 必须 `pcoupltype=semiisotropic` |
+
+### 约束算法 (Constraint Algorithm) [中文版]
+| 条件 | 设置 | dt上限 | 注 |
+|---|---|---|---|
+| 标准模拟 | `constraints = h-bonds` | 2 fs | 只约束含氢键 |
+| HMR (质量重分配) | `constraints = h-bonds` | 4 fs | 增加氢原子质量 |
+| 虚拟位点 (Virtual Sites) | `constraints = all-bonds` | 5 fs | 需要手动拓扑编辑 |
+
+### 关键参数默认值与阈值 (Key Defaults & Thresholds) [中文版]
+| 参数 | 默认值 | 何时更改 |
+|---|---|---|
+| `dt` | 0.001 ps (1 fs) | 设为0.002用于标准MD |
+| `nsteps` | 0 (无限制) | 始终明确设置 |
+| `rlist` | (无硬默认) | = `rcoulomb` = `rvdw`，通常1.0 nm |
+| `rcoulomb` | 1.0 nm | 0.9 nm用于HMR 4 fs dt |
+| `rvdw` | 1.0 nm | = rcoulomb |
+| `fourierspacing` | 0.12 nm | 0.10 nm用于高精度 |
+| `pme-order` | 4 | 6用于高精度 |
+| `nstlist` | 10 | 20-40用于GPU运行 |
+| `nstxout-compressed` | 5000 (5 ps) | 更小值用于详细分析 |
+| `emtol` | 10.0 kJ/mol/nm | 1000用于初步EM，10用于最终 |
+| `emstep` | 0.01 nm | 0.001用于精细系统 |
+| `pcoupltype` | `isotropic` (各向同性) | `semiisotropic` (半各向同性) 用于膜 |
+
+### 自由能计算速查 (Free Energy Quick Reference) [中文版]
+| 任务 | 方法 | 关键MDP标志 |
+|---|---|---|
+| 溶剂化自由能 | TI + 软核势 | `free-energy=yes`, `sc-alpha=0.5` |
+| 结合自由能 | FEP/MBAR | `free-energy=yes`, `calc-lambda-neighbors=1` |
+| 沿坐标的PMF | 伞形采样 | `pull=yes`, `pull-coord1-type=umbrella` |
+| 自动PMF | AWH | `awh=yes`, 定义awh坐标 |
+| 炼金术变换 | Lambda窗口 | `couple-lambda0=vdw-q`, `couple-lambda1=none` |
+
+### 常见问题诊断 (Tells & Smells) [中文版]
+| 观察 | 诊断 |
+|---|---|
+| NPT中温度漂移 | PR恒压器+Nose-Hoover需要适当的耦合 |
+| NPT后密度太低 | 延长平衡时间，检查盒子类型 |
+| 第0步LINCS警告 | 起始结构几何差，原子重叠 |
+| "1-4相互作用在X原子间" | 检查.top文件中的对定义 |
+| NVE中能量尖峰 | 时间步长太大，约束条件不满足 |
+| PME网格维数改变 | 盒子尺寸变化（检查压力耦合） |
+| 性能慢、GPU利用率低 | 每个GPU原子太少 |
+| 邻居列表溢出 | 增加 `rlist` 缓冲区: `verlet-buffer-tolerance=-1` |
+| 启动时Segfault | CPU架构GMX_SIMD设置错误 |
+| 盒向量信息缺失 | 使用 `gmx trjconv -pbc mol -center` |
+| 无限/NaN坐标 | 力场问题，检查起始结构和参数 |
+| 动能异常高/低 | 检查初始温度、约束和力场 |
+
+### 膜模拟决策规则 (Membrane Simulation Rules) [中文版]
+| 参数 | 值 | 原因 |
+|---|---|---|
+| `pcoupltype` | `semiisotropic` | xy和z独立变形 |
+| `ref_p` | 1.0 1.0 (xy z) | 横向和法向分别参考压力 |
+| `tc-grps` | `Protein_DPPC Water_and_ions` | 不同组扩散率不同 |
+| `comm-grps` | `Protein_DPPC Water_and_ions` | 防止界面系统中的质心漂移 |
+| DPPC温度 | ≥ 323 K | 高于相变温度(Tm = 315 K) |
+| 面积/脂质目标 | ~62-64 Å² (DPPC) | 实验值，平衡后验证 |
+
+### 配体参数化服务器选择 (Ligand Parametrization Server) [中文版]
+| 力场 | 服务器/工具 | 注 |
+|---|---|---|
+| CHARMM | CGenFF | 惩罚分数指示质量 |
+| AMBER/GAFF | Antechamber + acpype | Python包装器写GROMACS拓扑 |
+| GROMOS96 54A7 | ATB (Automated Topology Builder) | GROMOS兼容 |
+| OPLS-AA | LigParGen | Jorgensen课题组 |
+
+### 伞形采样速查 (Umbrella Sampling Quick Reference) [中文版]
+| 参数 | 典型值 | 何时调整 |
+|---|---|---|
+| `pull-coord1-k` | 1000 kJ/mol/nm² | 无重叠时收紧，太窄时放松 |
+| `pull-coord1-rate` | 0.01 nm/ps (拉伸) | 更小值接近平衡态 |
+| `pull-coord1-rate` | 0.0 (伞形) | 固定位置采样 |
+| 窗口间距 | 0.1-0.2 nm | 必须产生重叠的直方图 |
+| 成品/窗口 | 5-20 ns | 更长时间用于收敛的PMF |
+
+### 时间步长选择 (Timestep Selection) [中文版]
+| dt | 约束 | 方法 | 注 |
+|---|---|---|---|
+| 1 fs | none | 无约束标准 | 保守选项 |
+| **2 fs** | `h-bonds` | **所有教程标准** | 最常用 |
+| 4 fs | `h-bonds` + HMR | 质量重分配 | 增加H质量 |
+| 5 fs | `all-bonds` + vsites | 虚拟位点 | 手动拓扑编辑 |

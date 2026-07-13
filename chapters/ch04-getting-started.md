@@ -64,3 +64,27 @@ gmx mdrun -v -deffnm em
 - **Ch 9**: MDP parameter reference
 - **Ch 13**: Command reference for all tools
 - **Ch 27**: File format specifications
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 流程图 | flowchart / workflow | 模拟标准流程 |
+| 分子拓扑文件 | molecular topology file (.top) | pdb2gmx 生成 |
+| 预处理指令 | preprocessor directives | #include, #ifdef, #endif |
+| 分子结构文件 | molecular structure file (.gro/.pdb) | 坐标文件 |
+| 分子动力学参数文件 | MD parameter file (.mdp) | 所有模拟设置 |
+| 索引文件 | index file (.ndx) | 指定原子组 |
+| 运行输入文件 | run input file (.tpr) | 包含模拟全部信息 |
+| 轨迹文件 | trajectory file (.trr/.xtc) | 模拟轨迹输出 |
+| 日志文件 | log file (.log) | 性能和警告信息 |
+| 检查点文件 | checkpoint file (.cpt) | 全精度状态保存 |
+| 能量文件 | energy file (.edr) | 二进制能量数据 |
+| 环境变量 | environment variable | 如 GMXLIB |
+| 预处理器变量 | preprocessor variable | 如 POSRES |
+| 默认索引组 | default index groups | System, Protein, Water 等 |
+| 溶剂化 | solvation | 添加溶剂分子 |
+
+**关键概念**: GROMACS 模拟遵循标准工作流：pdb2gmx 生成拓扑 -> editconf 定义盒子 -> solvate 溶剂化 -> genion 添加离子 -> grompp 预处理 -> mdrun 运行。最重要的文件类型包括 .top（拓扑）、.gro（结构）、.mdp（参数）、.tpr（运行输入）、.xtc（压缩轨迹）。GROMACS 使用类似 C 预处理器的内建 #include 机制来组织拓扑文件，通过 -D 预处理器变量实现条件编译（如位置限制 POSRES）。所有 GROMACS 工具通过 gmx 封装器调用，使用 -h 可查看完整选项。GMXLIB 环境变量指定力场文件搜索路径。
+
+Sources: GROMACS 2019.6 中文译版 (§3.1)

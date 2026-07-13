@@ -126,3 +126,28 @@ There is no domain decomposition for N nodes that is compatible with the given b
 - **Ch 4**: Getting started workflow
 - **Ch 9**: MDP parameters
 - **Ch 13**: Command reference
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 常见错误 | common errors | 按阶段分类 |
+| 内存不足 | out of memory | 分配时错误 |
+| 残基未找到 | residue not found | 拓扑数据库中缺少 |
+| 过长的键 | long bonds | 缺失原子导致 |
+| 链标识符 | chain identifier | 非相邻使用同一标识 |
+| 力场文件未找到 | force field not found | GMXLIB 路径问题 |
+| 指令顺序错误 | invalid directive order | topology 节段顺序 |
+| 总电荷非零 | non-zero total charge | 离子不平衡 |
+| 致命错误 | fatal error | 无此分子类型 |
+| 温度耦合组 | T-coupling group | 原子数过少 |
+| 截断长度 | cutoff length | 超过盒子一半 |
+| LINCS 警告 | LINCS warnings | 水分子无法收敛 |
+| 步长太小 | stepsize too small | 能量无变化 |
+| 力无穷大 | force not finite | 原子受力非有限 |
+| 区域分解错误 | domain decomposition error | 进程数与盒子不匹配 |
+| 爆破 | system blowing up | 系统不稳定 |
+
+**关键概念**: GROMACS 错误按模拟阶段分为三类：pdb2gmx 错误（与输入 PDB 的命名/格式有关），grompp 错误（参数验证阶段），以及 mdrun 错误（运行时）。pdb2gmx 常见问题包括残基命名不匹配、原子缺失、力场文件找不到（检查 GMXLIB）。grompp 常见问题包括拓扑指令顺序错误、系统总电荷非零、拓扑与坐标原子数不匹配。mdrun 常见问题包括 LINCS/SETTLE 警告（通常是初始几何不好，先运行 EM）、模拟爆破（步长过大、力场参数错误）、和区域分解不兼容（进程数过多）。中文手册对每种错误都给出了中文错误信息和说明。
+
+Sources: GROMACS 2019.6 中文译版 (§3.11)

@@ -95,32 +95,41 @@ GROMACS supports advanced simulation methods beyond classical MD: QM/MM (CP2K, M
 
 ## 中文术语对照 (Chinese Terminology)
 
-**高级方法** (来自中文手册 §6.8-6.14):
+| 中文 | English | Notes |
+|------|---------|-------|
+| 电场 | Electric field | 脉冲/振荡电场: E(t)=E0exp[-(t-t0)²/2σ²]cos[ω(t-t0)] |
+| 计算电生理学 | Computational electrophysiology (CompEL) | 双膜系统，离子浓度不平衡建立跨膜电位 |
+| 跨膜电位差 | Transmembrane potential ΔU | ΔU=Δq/C_membrane，由电荷不平衡维持 |
+| 离子交换 | Ion swapping | 腔室间交换离子/水分子恢复参考离子数 |
+| 交换频率 | swap-frequency | 离子交换尝试频率 |
+| 划分组 | split-group | 定义腔室边界(通道中心) |
+| 通道圆柱体 | Channel cylinder | 追踪通过每个通道的离子种类和数目 |
+| 反转电位 | Reversal potential | I-U关系线性拟合零电流点 |
+| 通道电导 | Channel conductance G | G=∑niqi/(Δt·ΔU) |
+| 强制旋转 | Enforced rotation | 多种势能(各向同性/平行运动/径向运动/柔性轴) |
+| 固定轴旋转 | Fixed axis rotation | 恒定ω绕v̂轴，支点u |
+| 柔性轴旋转 | Flexible axis rotation | 板块划分+高斯加权，消除刚体行为 |
+| 虚拟弹簧势 | Virtual spring potential | 原子附着于移动参考位置 |
+| 平行运动势 | Parallel motion potential | 消除平行于旋转轴的力分量 |
+| 径向运动势 | Radial motion potential | 消除/减少径向力分量 |
+| 旋转组角度θ_av | Rotation group angle | 固定轴: 距离加权角度偏差均值 |
+| 力矩τ | Torque | 旋转势能力矩，N·m |
+| 三次样条插值 | Cubic spline interpolation | Vs(x)=A0+A1ε+A2ε²+A3ε³, h=x_{i+1}-x_i |
+| 剪切粘度(平衡) | Shear viscosity (equilibrium) | 爱因斯坦关系: η=(V/2kBT)lim d/dt ⟨(∫Pxz)²⟩ |
+| 剪切粘度(非平衡) | Shear viscosity (non-equilibrium) | 余弦加速剖面: ax(z)=Acos(2πz/lz) |
+| 速度剖面 | Velocity profile | vx(z)=Vcos(2πz/lz), V=Aρ(lz/2π)²/η |
+| 移除最快自由度 | Removing fastest DOF | 虚拟位点+H质量重分配，最大时间步长~4fs |
+| 芳香基团面外振动 | Aromatic out-of-plane vibrations | 虚拟位点固定平面，消除反常二面角 |
+| 氢原子虚拟位点 | Hydrogen virtual sites | 固定键距/固定键角/哑质点等多种构建方法 |
+| 使用自由能代码求PMF | PMF via free energy code | 简谐键/约束+λ改变距离，或位置限制方法 |
 
-| 中文 | English | 说明 |
-|------|---------|------|
-| 混合量子经典 | QM/MM (Hybrid QM/Classical) | GROMACS(MM) + CP2K/MiMiC(QM) |
-| 链接原子 | Link atoms | 封端QM/MM边界 |
-| 自适应分辨率方案 | Adaptive resolution scheme (AdResS) | 不同区域不同精度 |
-| 粗粒化力场 | Coarse-grained force fields | MARTINI, PLUM |
-| 集体变量 | Collective variables (Colvars) | 描述集合运动, PLUMED接口 |
-| 神经网络势 | Neural network potentials (NNP) | 机器学习力场 |
-| 快速多极子方法 | Fast multipole method (FMM) | O(N)长程静电替代PME |
-| 交互式分子动力学 | Interactive MD (iMD) | VMD插件实时操控 |
-| 剪切模拟 | Shear simulations | Lees-Edwards边界 |
-| 表格势能函数 | Tabulated potentials | 三次样条插值, 用户自定义 |
-| 粘度 | Viscosity | 压力张量自相关或余弦加速 |
-| 膜嵌入 | Membrane embedding | `gmx membed` 自动嵌入 |
+**关键概念**:
+- CompEL: 双膜体系，Δq不平衡建立ΔU，控制离子数目参考值，检测通道通量和电导
+- 电场类型: 静态(σ=0,ω=0)、振荡(σ=0)、脉冲振荡(σ>0)
+- 强制旋转势能类型丰富: 各向同性/平行运动/径向运动/二型径向运动，各有固定轴和柔性轴变体
+- 柔性轴: 板块高斯加权求和(σ=0.7Δx, 总和≈1不变)，板块中分面可附着于质心(耐平动)
+- 非平衡粘度: 余弦加速法，剪切速率sh_max=Aρlz/(2πη)，需确保系统不偏离平衡太远
+- 虚拟位点构建: 羟基用约束固定键角；胺基用哑质点保留旋转自由度；芳环用3个约束原子
+- 表格相互作用: 三次样条，查表+插值计算势能和力
 
-**力场** (来自中文手册 §4.10):
-
-| 中文 | English | 说明 |
-|------|---------|------|
-| GROMOS-96 | GROMOS-96 | 联合原子, 几何组合规则 |
-| OPLS/AA | OPLS-AA | 全原子, 有机分子 |
-| AMBER | AMBER | 全原子, 蛋白质/核酸 |
-| CHARMM | CHARMM | 全原子, CMAP修正 |
-| MARTINI | MARTINI | 粗粒化力场, 4:1映射 |
-| PLUM | PLUM | 蛋白质-配体粗粒化力场 |
-
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §4.10, §6.8-6.14, CC-BY compatible.
+Sources: GROMACS 2019.6 中文译版

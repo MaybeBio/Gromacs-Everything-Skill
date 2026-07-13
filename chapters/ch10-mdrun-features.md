@@ -84,3 +84,27 @@ tail -50 md.log | grep Performance
 - **Ch 6**: Long simulations and checkpoint management
 - **Ch 11**: Performance tuning
 - **Ch 13**: mdrun command reference
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 重新运行模拟 | re-running a simulation | -rerun 选项 |
+| 可重现模式 | reproducible mode | -reprod 选项 |
+| 多重模拟 | multi-simulation | -multidir 选项 |
+| 控制模拟长度 | controlling simulation length | -nsteps / -maxh |
+| 终止信号 | termination signals | SIGTERM, SIGUSR1, SIGINT |
+| 性能计数器 | performance counters | ns/day, hours/ns, GFlops |
+| 膜蛋白嵌入模拟 | membrane protein embedding | gmx mdrun 特殊功能 |
+| MPI 并行 | MPI parallelization | gmx_mpi mdrun |
+| 线程 MPI | thread-MPI | 单节点内建并行 |
+| 自定义后缀 | custom suffix | 单独构建 mdrun_mpi |
+| 作业调度程序 | job scheduler | 配合 -maxh 使用 |
+| 挂钟时间 | wall-clock time | 实际运行时间限制 |
+| 平衡负载 | load balancing | 动态调整 |
+| PME 进程数 | PME ranks | -npme 选项 |
+| GPU 卸载 | GPU offload | -nb gpu -pme gpu |
+
+**关键概念**: mdrun 是 GROMACS 中唯一支持 MPI 并行的组件，也是唯一可以单独构建的二进制文件。它支持多种高级功能：-rerun 重新计算已有轨迹的能量（用于自由能分析），-reprod 强制确定性执行（用于调试），-multidir 同时运行多个独立模拟（用于副本交换或自由能 λ 窗口），-maxh 指定最大挂钟时间（配合作业调度器安全停止）。中文手册中列出了多种终止 mdrun 的方式：超过步数、用户 Ctrl-C、调度器超时、-maxh 限制、以及灾难性故障（断电、磁盘满）。所有情况下 mdrun 都会写入检查点文件以支持安全重启。
+
+Sources: GROMACS 2019.6 中文译版 (§3.9-3.10)

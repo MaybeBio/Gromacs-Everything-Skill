@@ -87,29 +87,70 @@ amber99sb-ildn.ff/
 
 ## 中文术语对照 (Chinese Terminology)
 
-**自由能相互作用** (来自中文手册 §4.5):
-| 中文 | English | 说明 |
-|------|---------|------|
-| 自由能相互作用 | Free energy interactions | λ依赖的势能插值 |
-| 线性插值 | Linear interpolation | 键合参数在A/B状态间线性变化 |
-| 软核相互作用 | Soft-core interactions | 防止λ中间值奇点 |
-| λ向量 | Lambda vector | 不同分量以不同速率转变 |
-| 状态A/状态B | State A/State B | λ=0/λ=1 对应的物理状态 |
-| 键伸缩插值 | Bond stretch interpolation | V_b = ½[(1-λ)k^A + λk^B][b − (1-λ)b₀^A − λb₀^B]² |
-| 二面角插值 | Dihedral interpolation | V_d = [(1-λ)k^A + λk^B](1 + cos[nφ − (1-λ)φ_s^A − λφ_s^B]) |
-
-**虚拟相互作用位点** (来自中文手册 §4.7):
-| 中文 | English | 说明 |
-|------|---------|------|
-| 虚拟相互作用位点 | Virtual interaction sites | 以前称"哑原子"(dummy atoms) |
+| 中文 | English | Notes |
+|------|---------|-------|
+| 极化 | Polarization | 壳层(Drude)粒子附着到原子/虚拟位点 |
+| 简单极化 | Simple polarization | 平衡距离为0的简谐势，k_cs = q_s²/α |
+| 极化率 | Polarizability α | 拓扑输入，GROMACS单位nm³ (1 Å³=0.001 nm³) |
+| 过极化 | Over-polarization | 非简谐极化修正: 四阶项k_hyp(r_cs−δ)⁴ |
+| Thole极化 | Thole polarization | 壳层粒子间相互作用屏蔽，V_thole=(q_i·q_j/r)[1−(1+¯r/2)e^(−¯r)] |
+| Thole魔数a | Thole magic number a | 通常取2.6，无量纲参数 |
+| 自由能相互作用 | Free energy interactions | λ从A→B的(非)线性插值 |
+| λ向量 | Lambda vector | 自4.6起独立控制Coulomb/LJ/成键/约束分量的λ转变 |
+| 简谐键λ插值 | Harmonic bond λ interpolation | V=½[(1−λ)k^A+λk^B][b−(1−λ)b₀^A−λb₀^B]² |
+| 二面角λ插值 | Dihedral λ interpolation | V=[(1−λ)k^A+λk^B](1+cos[nφ−(1−λ)φ_s^A−λφ_s^B]) |
+| 库仑λ插值 | Coulomb λ interpolation | V_c=(f/ε_r·r)[(1−λ)q_i^A·q_j^A+λq_i^B·q_j^B] |
+| LJ λ插值 | LJ λ interpolation | V_LJ=[(1−λ)C₁₂^A+λC₁₂^B]/r^12 − [(1−λ)C₆^A+λC₆^B]/r^6 |
+| 动能λ贡献 | Kinetic λ contribution | ∂E_k/∂λ=−½v²(m^B−m^A)，质量变化时有贡献 |
+| 约束λ贡献 | Constraint λ contribution | ∂G/∂λ=−Σλ_k(d_k^B−d_k^A)，LINCS; SHAKE乘2因子 |
+| 软核相互作用 | Soft-core interactions | r_A=(α·σ_A⁶·λ^p+r⁶)^(1/6)，r_B=(α·σ_B⁶·(1−λ)^p+r⁶)^(1/6) |
+| 标准软核 | Standard soft-core (6-exp) | sc-alpha≈0.5, sc-power=1或2, p=1得更平滑∂H/∂λ |
+| 新型软核(1-1-48) | New soft-core 1-1-48 protocol | 48指数替代6，sc-alpha=0.001-0.003，统计方差更低 |
+| 虚拟相互作用位点 | Virtual interaction sites | 曾称"哑原子"(dummy atoms)，无质量 |
 | 构建原子 | Constructing atoms (parents) | 决定虚拟位点位置的真实原子 |
-| 力的重新分配 | Force redistribution | 虚拟位点上的力→分配到构建原子 |
-| 张量形式 | Tensor form | F_i' = (∂r_s/∂r_i)ᵀ·F_s |
-| 合力守恒 | Total force conservation | 合力和总力矩均守恒 |
-| 维里修正 | Virial correction | 使用虚拟位点时必须先重新分配力再计算维里 |
-| 六种构建类型 | Six construction types | 按构建原子数目分类 |
+| 力的重新分配 | Force redistribution | F_i'=F_i^(direct)+(∂r_s/∂r_i)ᵀ·F_s，张量形式 |
+| 2原子线性(类型2) | 2-atom linear (type 2) | r_s=w_i·r_i+w_j·r_j, w_i=1−a, w_j=a |
+| 3原子线性(类型3) | 3-atom linear (type 3) | r_s=w_i·r_i+w_j·r_j+w_k·r_k, w_i=1−a−b |
+| 3fd(固定距离平面内) | 3fd (fixed dist in-plane) | r_s=r_i+b·(r_ij+a·r_jk)/|r_ij+a·r_jk| |
+| 3fad(固定角度距离) | 3fad (fixed angle+dist) | r_s=r_i+dcosθ·r_ij/|r_ij|+dsinθ·r_⊥/|r_⊥| |
+| 3out(平面外) | 3out (out-of-plane) | r_s=r_i+a·r_ij+b·r_ik+c·(r_ij×r_ik) |
+| 4fdn(四原子固定距离) | 4fdn (new 4-atom fixed dist) | 拓扑type值为2，替代不稳定旧4fd(type=1) |
+| N原子线性(几何/质量/权重中心) | N-atom linear (geometric/COM/COW) | w_i=a_i/(Σa_j)，三种权重选择 |
+| 维里修正 | Virial correction | 使用虚拟位点时必须**先**分配力再计算维里 |
+| Ewald加和 | Ewald summation | 直接空间(erfc)+倒易空间(exp)+自能校正 |
+| Ewald参数β | Ewald β | 决定直接/倒易空间划分，平衡两者计算成本 |
+| 直接空间加和 | Direct space sum | V_dir=f/2·Σ q_i·q_j·erfc(βr)/r |
+| 倒易空间加和 | Reciprocal space sum | V_rec=f/(2πV)·Σ q_i·q_j·Σ exp(−(πm/β)²+2πi·m·r_ij)/m² |
+| 自能校正 | Self-energy correction | V₀=−(fβ/√π)·Σ q_i² |
+| 色散长程校正 | Long-range dispersion correction | 假定r>r_c后g(r)=1，解析积分 |
+| 能量长程校正 | Energy LR correction | V_lr=−⅔πNρ·C₆·r_c⁻³ (简单截断) |
+| 压力长程校正 | Pressure LR correction | P_lr=−(4/3)π⟨C₆⟩·ρ²·r_c⁻³，S PC水~−280 bar |
+| 平均色散常数 | ⟨C₆⟩ average | ⟨C₆⟩=2/[N(N−1)]·Σ_i Σ_{j>i} C₆(i,j) |
+| LJ-PME | Lennard-Jones PME | 网格基长程色散，类PME但7次FFT(L-B规则需优化) |
+| 几何组合近似 | Geometric combination approximation | LJ-PME用几何组合≈L-B组合，误差<0.5%但显著提速 |
+| LJ直接空间修正 | LJ direct space correction | V_dir=C₆^dir·r^(−6)−C₆^recip[1−g(βr)]·r^(−6) |
+| 力场 | Force field | 势函数(方程集) + 参数(同类函数多套参数) |
+| 电荷组 | Charge group | 保持净电荷为零，使用PME后不再需要但保留 |
 
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §4.5, §4.7, CC-BY compatible.
+**关键概念**:
+1. **软核原理**: 防止λ=0/1处粒子消失/出现时因距离→0导致奇点。标准公式r_A=(α·σ_A⁶·λ^p+r⁶)^(1/6)，p=1比p=2给出更平滑的∂H/∂λ。新型1-1-48使用48指数替代6，α取0.001-0.003
+2. **虚拟位点构造**: 六种类型按构建原子数分。线性组合最简单(力也用相同权重分配)。3fd/3fad/3out需要更复杂的力分配。使用虚位点时可做到dt=5 fs
+3. **Ewald→PME**: Ewald倒易空间O(N²)或O(N^(3/2))，PME用3D FFT降至O(N·logN)。PME默认pme-order=4(立方)，fourierspacing=0.12nm，ewald-rtol=1e-5
+4. **色散校正重要性**: 能量校正通常小但在自由能计算中很重要。压力校正非常大约−280 bar(SPC水，r_c=0.9nm)，任何NPT模拟不可忽略
+5. **LJ-PME**: 用几何组合近似Lorentz-Berthelot规则(仅倒易空间部分)，误差<0.5%总色散能但性能显著提升。倒易组合规则由lj-pme-comb-rule决定
+
+**重要公式**:
+- 简单极化: k_cs = q_s²/α
+- Thole屏蔽: V_thole = (q_i·q_j/r)·[1−(1+¯r/2)e^(−¯r)], ¯r = a·r_ij/(α_i·α_j)^(1/6)
+- 软核r_A: r_A = (α·σ_A⁶·λ^p + r⁶)^(1/6)
+- 软核力: F_sc = (1−λ)·F^A(r_A)·(r/r_A)⁵ + λ·F^B(r_B)·(r/r_B)⁵
+- Ewald: V=V_dir+V_rec+V₀, V_dir=f/2·Σq_i·q_j·erfc(βr)/r
+- 能量LR校正(简单截断): V_lr = −⅔πNρ·C₆·r_c⁻³
+- 压力LR校正: P_lr = −(4/3)π⟨C₆⟩·ρ²·r_c⁻³
+- 虚拟位点力分配: F_i' = F_i^(direct) + (∂r_s/∂r_i)ᵀ·F_s
+- 虚拟位点线性组合: r_s = Σ_i w_i·r_i, F_i = w_i·F_s
+
+Sources: GROMACS 2019.6 中文译版, §5.5.4-5.5.9
 
 ## Practical Virtual Site Construction (Lemkul Tutorial)
 

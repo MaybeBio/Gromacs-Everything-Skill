@@ -90,26 +90,51 @@ GROMACS provides multiple thermostat and barostat options for different simulati
 
 | 中文 | English | Notes |
 |------|---------|-------|
-| 温度耦合/恒温器 | Thermostat | 控制体系温度 |
-| 压力耦合/压浴 | Barostat | 控制体系压力 |
-| 弱耦合 | Weak coupling | Berendsen方法的特点 |
-| 扩展系统方法 | Extended system | Nose-Hoover和Parrinello-Rahman的方法论 |
-| 随机项/随机力 | Stochastic term/force | V-rescale和Langevin动力学的基础 |
-| 约束算法 | Constraint algorithms | LINCS/SHAKE/SETTLE |
-| 键长约束 | Bond length constraints | 移除高频振动, 允许更大时间步长 |
-| 迭代容差 | Iteration tolerance | SHAKE的收敛判据 `shake-tol = 0.0001` |
-| 展开阶数 | Expansion order | LINCS中耦合矩阵的展开阶数 (`lincs-order = 4`) |
+| 温度耦合 | Temperature coupling / Thermostat | 从NVE→NVT系综，修改运动方程 |
+| 弱耦合 | Weak coupling | Berendsen方法特征，一阶指数衰减，不产生正确系综 |
+| 速度重缩放 | Velocity rescaling (V-rescale) | 附加随机项的Berendsen恒温器，产生正确正则系综 |
+| Nosé-Hoover恒温器 | Nosé-Hoover thermostat | 扩展系综方法，引入热浴变量ξ，振荡弛豫 |
+| 热浴变量/摩擦参数 | Heat bath variable ξ | Nosé-Hoover中的额外自由度，p_ξ为其动量 |
+| Nosé-Hoover链 | Nosé-Hoover chain | 链长默认为10，改进遍历性但仍非完全遍历 |
+| 质量参数 | Mass parameter Q | Q = τ_T²T₀/(4π²)，决定Nosé-Hoover耦合强度 |
+| Andersen恒温器 | Andersen thermostat | 周期性从Maxwell-Boltzmann分布重选速度，减慢动力学 |
+| 恒压器/压浴 | Barostat / Pressure bath | Berendsen, Parrinello-Rahman, MTTK |
+| 等温压缩系数 | Isothermal compressibility β | 水: 4.6×10⁻⁵ bar⁻¹ (7.6×10⁻⁴ MD单位) |
+| Parrinello-Rahman耦合 | P-R barostat | 扩展系统，产生真正NPT系综，时间常数应为弱耦合的4-5倍 |
+| 半各向同性缩放 | Semiisotropic scaling | x/y方向各向同性 + z方向独立，用于膜系统 |
+| 完全各向异性变形 | Fully anisotropic deformation | 使用约束时需更缓慢缩放或减小时间步长 |
+| 表面张力耦合 | Surface tension coupling | γ(t) = (L_z/n)[P_zz − (P_xx+P_yy)/2] |
+| MTTK压力控制 | Martyna-Tuckerman-Tobias-Klein | 速度Verlet专用的NPT方法，5.1起仅用于无约束系统 |
+| 约束算法 | Constraint algorithms | LINCS(默认)、SHAKE、SETTLE |
+| SHAKE | SHAKE | 迭代Lagrange乘子，相对容差收敛，并行性差 |
+| SETTLE | SETTLE | 刚性水分子分析解，超过80%模拟体系涉及 |
+| RATTLE | RATTLE | 速度Verlet第二步约束，去除平行于键向量的速度分量 |
+| LINCS | LINCS | 非迭代两步法，矩阵幂展开求逆，比SHAKE更快更稳定 |
+| P-LINCS | P-LINCS | LINCS的并行版本，处理跨单元边界的键约束 |
+| 约束耦合矩阵 | Constraint coupling matrix | B_n M⁻¹ B_n^T，K×K矩阵，对角含1/m₁+1/m₂ |
+| 展开阶数 | Expansion order (lincs-order) | MD四阶，大时间步长BD需八阶 |
+| 约束三角形 | Constraint triangles | 醇类基团OH键角约束特征值~0.7，收敛较慢 |
+| 拉格朗日乘子 | Lagrange multiplier λ_k | 求解约束力，G_i = −Σ_k λ_k·∂σ_k/∂r_i |
+| 模拟退火 | Simulated annealing (SA) | 多组不同退火策略，支持single和periodic |
+| 随机动力学 | Stochastic dynamics (SD) / Langevin | m·dv/dt = −mγv + F + 噪声力 |
+| 布朗动力学 | Brownian dynamics (BD) | 过阻尼极限，忽略惯性：dr/dt = F/γ + 噪声 |
+| 最陡下降 | Steepest descent (SD) | 沿负梯度(力方向)移动，稳健但收敛慢 |
+| 共轭梯度法 | Conjugate gradient (CG) | 远离极小点表现差，但近极小点高效 |
+| L-BFGS | Limited-memory BFGS | 准牛顿方法，滑动窗校正，收敛最快但未并行化 |
+| 简正模式分析 | Normal mode analysis (NMA) | 对角化质量加权Hessian矩阵，需双精度 |
+| Hessian矩阵 | Hessian matrix | H_ij = ∂²V/∂x_i∂x_j，3N×3N矩阵 |
 
-**SHAKE vs LINCS的中文解释**: SHAKE是迭代方法, 通过Lagrange乘子重置键长, 并行性差; LINCS是线性约束求解器, 默认方法, 快且可并行; SETTLE是分析解, 仅用于刚性3原子水分子。
+**关键概念**:
+1. **恒温器选择原则**: Berendsen(快速弛豫，不产生正确系综)→仅用于初始平衡; V-rescale(速度重缩放+随机项)→产生正确NVT系综，推荐生产使用; Nosé-Hoover(扩展系统，振荡弛豫)→τ_T应为弱耦合的4-5倍; Andersen→减慢动力学，通常不用于研究输运性质
+2. **恒压器选择原则**: Berendsen(快速盒子弛豫)→仅用于初始; P-R(扩展系统，真正NPT)→需接近平衡密度再用，τ_p取4-5倍; 膜系统必须semiisotropic; MTTK仅与速度Verlet+无约束使用
+3. **LINCS核心**: 矩阵A_n的特征值~0.4(仅键约束)或~0.7(含角约束三角形)。每增加一阶偏差降为原来的0.4。算法不可能崩溃，即使无法重置约束也会产生尽可能满足约束的构型
+4. **简正分析前提**: 需完全能量最小化(容差~0.001 kJ/mol)，需双精度。使用最陡下降+共轭梯度或L-BFGS进行最小化，禁用约束。
 
-**恒温器选择原则**:
-- Berendsen: 快速收敛但**不产生正确系综** → 仅用于初始弛豫
-- V-rescale (Bussi恒温器): 速度重缩放 + 随机项 → **产生正确NVT系综**
-- Nose-Hoover: 扩展系统, 可能产生温度振荡 → 生产相用
+**重要公式**:
+- Berendsen缩放: λ = [1 + n_TC·Δt/τ_T·(T₀/T−1)]^½ (限制范围0.8≤λ≤1.25)
+- Nosé-Hoover运动: d²r_i/dt² = F_i/m_i − (p_ξ/Q)·dr_i/dt
+- SD更新: α = 1−e^(−γΔt), Δv = −α·v' + √(k_B T(1−α²)/m)·噪声
+- 最陡下降: r_{n+1}=r_n + F_n·h_n/max(|F_n|), V↓→h×1.2, V↑→h×0.2
+- Hessian对角化: R^T·M^(−½)·H·M^(−½)·R = diag(λ_1,...,λ_3N), λ_i=(2πω_i)²
 
-**压浴选择原则**:
-- Berendsen压浴: 快速盒子弛豫, 不产生正确NPT系综
-- Parrinello-Rahman: 扩展系统, 正确NPT系综, 需系统已接近平衡密度
-- 膜系统必须使用 `semiisotropic` (x/y和z方向独立缩放)
-
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §3.4.8-3.4.9, §3.6, CC-BY compatible.
+Sources: GROMACS 2019.6 中文译版, §5.4.5-5.4.10

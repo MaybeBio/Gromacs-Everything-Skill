@@ -61,3 +61,30 @@ GROMACS has specific terminology for its components, algorithms, and file format
 - **Ch 9**: MDP parameters using these terms
 - **Ch 20**: Algorithm details
 - **Ch 21**: Free energy methods
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 周期性边界条件 | periodic boundary conditions (PBC) | 消除表面效应 |
+| 压强 | pressure | 波动性质 |
+| 控温器/恒温器 | thermostat | 维持温度恒定 |
+| 控压器/恒压器 | barostat | 维持压力恒定 |
+| 能量守恒 | energy conservation | NVE 系综 |
+| 平均结构 | average structure | 轨迹平均 |
+| 爆破 | system blow-up | 模拟崩溃 |
+| 力场 | force field | 势能函数和参数 |
+| 约束 | constraints | 固定键长 |
+| 限制 | restraints | 限制位移 |
+| 环境变量 | environment variables | 控制运行时行为 |
+| 浮点运算 | floating-point arithmetic | 精度限制 |
+| 粒子类型 | particle type | 原子类型/电荷组 |
+| 分子类型 | moleculetype | 拓扑中的定义 |
+| 质心/质量中心 | center of mass (COM) | 加权平均位置 |
+| 默认组 | default groups | System, Protein, Water 等 |
+| 联合原子 | united-atom | 无显式脂肪族 H |
+| 虚拟位点 | virtual sites | 无质量相互作用位点 |
+
+**关键概念**: 中文手册的术语部分涵盖了 GROMACS 中所有核心概念的中英文对照。压强在模拟中是一个波动量（而非精确常数），周期性边界条件是最常用边界条件模拟体相系统。控温器种类包括 Berendsen, V-rescale, Nose-Hoover 等，控压器包括 Berendsen, Parrinello-Rahman 等。约束（constraints，如固定键长为精确值）和限制（restraints，如用简谐势惩罚偏离）是两个不同的概念。系统爆破通常由初始结构不良、时间步长过大或力场参数错误引起。环境变量如 GMX_MAXBACKUP 控制文件备份数量，GMX_GPU_ID 选择 GPU 设备。
+
+Sources: GROMACS 2019.6 中文译版 (§3.12-3.16)

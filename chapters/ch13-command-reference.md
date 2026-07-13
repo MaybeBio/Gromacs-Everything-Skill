@@ -132,3 +132,29 @@ gmx cluster -s topol.tpr -f centered.xtc -method gromos -cutoff 0.2 -cl clusters
 ## Connects To
 - **Ch 4**: Getting started workflow
 - **Ch 32**: Analysis methods
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 命令行参考 | command-line reference | gmx 封装器 |
+| 按名称排序 | sorted by name | 100+ 命令 |
+| 按主题排序 | sorted by topic | 分析/创建拓扑/运行等 |
+| 布尔选项 | boolean options | -pbc / -nopbc |
+| 文件名称选项 | file name options | 自动追加扩展名 |
+| 枚举选项 | enum options | 可缩写匹配 |
+| 向量选项 | vector options | 1 或 3 个参数 |
+| 选区选项 | selection options | 动态选区语法 |
+| 创建拓扑与坐标 | create topology & coordinates | pdb2gmx, solvate, genion 等 |
+| 分析轨迹 | analyze trajectory | gangle, distance, rdf, sasa 等 |
+| 查看轨迹 | view trajectory | nmtraj, view |
+| 转换文件 | convert files | editconf, eneconv, trjconv 等 |
+| 结构间的距离 | distances between structures | cluster, confrms, rms, rmsf |
+| 分析成键相互作用 | analyze bonded interactions | angle, mk_angndx |
+| 静电性质 | electrostatic properties | dielectric, dipoles, potential |
+| 蛋白质分析 | protein-specific analysis | dssp, chi, helix, rama |
+| 协方差分析 | covariance analysis | anaeig, covar, make_edi |
+
+**关键概念**: GROMACS 包含 100+ 个分析工具，所有工具通过 gmx 封装器调用（如 gmx grompp）。中文手册按两种方式组织命令：按名称排序的完整列表和按主题排序的分类列表。主题分类包括：分析轨迹、创建拓扑与坐标、运行模拟、查看轨迹、处理能量、转换文件、结构距离分析、质量分布、静电性质、蛋白质分析、界面分析、协方差分析。所有命令支持相同的命令行约定：选项以短划线开头，布尔选项可否定（-nopbc），文件可自动追加扩展名，枚举值可缩写。
+
+Sources: GROMACS 2019.6 中文译版 (§3.7)

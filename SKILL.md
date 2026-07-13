@@ -6,7 +6,7 @@ description: "Knowledge base from \"GROMACS Documentation Release 2026.2\" by th
 <!-- argument-hint: [topic, framework name, or chapter number] -->
 
 # GROMACS Documentation Release 2026.2
-**Author**: GROMACS development team | **Enriched with**: Justin A. Lemkul tutorials (CC-BY 4.0), Chinese manual theory notes v5.0.2 (李继存译) | **Chapters**: 40 | **Generated**: 2026-07-11
+**Author**: GROMACS development team | **Enriched with**: Justin A. Lemkul tutorials (CC-BY 4.0), Chinese manual (GROMACS 2019.6 中文译版) | **Chapters**: 40 | **Generated**: 2026-07-13
 
 ## How to Use This Skill
 
@@ -124,6 +124,8 @@ Use this **6-phase mental model** for every simulation project:
 
 ## Chapter Index
 
+**All 40 chapters include comprehensive Chinese terminology, concepts, and formulas from GROMACS 2019.6 中文译版.**
+
 | # | Title | Key Content |
 |---|-------|-------------|
 | [ch01](chapters/ch01-downloads.md) | Downloads | Source code, regression tests |
@@ -134,7 +136,7 @@ Use this **6-phase mental model** for every simulation project:
 | [ch06](chapters/ch06-long-simulations.md) | Managing Long Simulations | Checkpoints, reproducibility, restarts |
 | [ch07](chapters/ch07-faqs.md) | FAQs | Installation, prep, methodology, analysis |
 | [ch08](chapters/ch08-force-fields-overview.md) | Force Fields [+tutorial] | AMBER/CHARMM/GROMOS/OPLS, **ligand parametrization (CGenFF)**, force field modification |
-| [ch09](chapters/ch09-mdp-options.md) | MDP Parameters [+中文] | Integrators, dt, cutoffs, coupling, constraints, **中文MDP参数术语** |
+| [ch09](chapters/ch09-mdp-options.md) | MDP Parameters | Integrators, dt, cutoffs, coupling, constraints |
 | [ch10](chapters/ch10-mdrun-features.md) | Useful mdrun Features | Re-run, multi-sim, reproducibility |
 | [ch11](chapters/ch11-performance-tuning.md) | Performance Tuning | GPU, MPI, domain decomposition, MTS |
 | [ch12](chapters/ch12-common-errors.md) | Common Errors [+tutorial] | pdb2gmx/grompp/mdrun diagnostics, **membrane/ligand/FE/umbrella troubleshooting** |
@@ -142,29 +144,29 @@ Use this **6-phase mental model** for every simulation project:
 | [ch14](chapters/ch14-terminology.md) | Terminology | MDP option glossary, GROMACS terms |
 | [ch15](chapters/ch15-validation.md) | Validation | Experimental features, pending validation |
 | [ch16](chapters/ch16-how-to-guides.md) | How-To Guides [+tutorial] | Solvation, **membrane protein (InflateGRO)**, parameterization, **biphasic systems** |
-| [ch17](chapters/ch17-preface-introduction.md) | Preface & Introduction [+中文] | Citation, free software, MD intro, Chinese terminology |
-| [ch18](chapters/ch18-definitions-units.md) | Definitions & Units [+中文] | Notation, MD units, precision, **中文符号约定/单位/MD单位** |
-| [ch19](chapters/ch19-algorithms-pbc.md) | Algorithms: PBC & MD [+中文] | Box types, neighbor searching, integrators, **蛙跳式算法/速度Verlet** |
-| [ch20](chapters/ch20-algorithms-constraints.md) | Algorithms: Constraints & Coupling [+中文] | LINCS/SHAKE/SETTLE, thermostats, barostats, **中文恒温器/压浴术语** |
-| [ch21](chapters/ch21-algorithms-free-energy.md) | Algorithms: Free Energy [+tutorial +中文] | TI/FEP/BAR/REMD/EM, **practical FE workflows + 中文自由能理论(慢增长/TI/λ向量)** |
-| [ch22](chapters/ch22-algorithms-parallel.md) | Algorithms: Parallelization [+中文] | Domain decomposition, GPU, load balancing, **区域分解中文术语** |
-| [ch23](chapters/ch23-interactions-nonbonded.md) | Non-bonded Interactions [+中文] | LJ/Buckingham/Coulomb/PME/cutoffs, **势能函数/LJ两种表述/组合规则** |
-| [ch24](chapters/ch24-interactions-bonded.md) | Bonded Interactions [+中文] | Bonds, angles, dihedrals, restraints, **中文键合相互作用/二面角/限制术语** |
-| [ch25](chapters/ch25-interactions-advanced.md) | Advanced Interactions [+tutorial +中文] | Soft-core, LJ-PME, **virtual sites construction (CO₂), 中文自由能相互作用/虚拟位点理论** |
-| [ch26](chapters/ch26-topologies.md) | Topologies [+中文] | .top/.itp structure, force field files, **中文拓扑/粒子类型/pdb2gmx输入文件术语** |
-| [ch27](chapters/ch27-file-formats.md) | File Formats [+中文] | .gro, .pdb, .tpr, .xtc, .edr, .cpt, .ndx, **中文文件类型/格式术语** |
+| [ch17](chapters/ch17-preface-introduction.md) | Preface & Introduction | Citation, free software, MD intro, Chinese terminology |
+| [ch18](chapters/ch18-definitions-units.md) | Definitions & Units | Notation, MD units, precision |
+| [ch19](chapters/ch19-algorithms-pbc.md) | Algorithms: PBC & MD | Box types, neighbor searching, integrators |
+| [ch20](chapters/ch20-algorithms-constraints.md) | Algorithms: Constraints & Coupling | LINCS/SHAKE/SETTLE, thermostats, barostats |
+| [ch21](chapters/ch21-algorithms-free-energy.md) | Algorithms: Free Energy [+tutorial] | TI/FEP/BAR/REMD/EM, **practical FE workflows** |
+| [ch22](chapters/ch22-algorithms-parallel.md) | Algorithms: Parallelization | Domain decomposition, GPU, load balancing |
+| [ch23](chapters/ch23-interactions-nonbonded.md) | Non-bonded Interactions | LJ/Buckingham/Coulomb/PME/cutoffs |
+| [ch24](chapters/ch24-interactions-bonded.md) | Bonded Interactions | Bonds, angles, dihedrals, restraints |
+| [ch25](chapters/ch25-interactions-advanced.md) | Advanced Interactions [+tutorial] | Soft-core, LJ-PME, **virtual sites construction (CO₂)** |
+| [ch26](chapters/ch26-topologies.md) | Topologies | .top/.itp structure, force field files |
+| [ch27](chapters/ch27-file-formats.md) | File Formats | .gro, .pdb, .tpr, .xtc, .edr, .cpt, .ndx |
 | [ch28](chapters/ch28-special-free-energy.md) | Special: Free Energy & Pulling [+tutorial] | PMF, **umbrella sampling workflow (4 steps: pull→extract→windows→WHAM)** |
-| [ch29](chapters/ch29-special-awh.md) | Special: AWH & Enhanced Sampling [+中文] | AWH, enforced rotation, electrophysiology, **中文牵引/强制旋转/QM-MM/IMD术语** |
-| [ch30](chapters/ch30-special-advanced.md) | Special: Advanced Methods [+中文] | QM/MM, PLUMED, Colvars, NNP, FMM, **中文高级方法/力场术语** |
-| [ch31](chapters/ch31-run-parameters.md) | Run Parameters & Programs [+中文] | File types, program workflow, **中文运行参数/程序术语** |
-| [ch32](chapters/ch32-analysis.md) | Analysis [+tutorial +中文] | RMSD/RMSF/RDF/MSD/hbond/clustering, **analysis workflow + 中文分析术语** |
+| [ch29](chapters/ch29-special-awh.md) | Special: AWH & Enhanced Sampling | AWH, enforced rotation, electrophysiology |
+| [ch30](chapters/ch30-special-advanced.md) | Special: Advanced Methods | QM/MM, PLUMED, Colvars, NNP, FMM |
+| [ch31](chapters/ch31-run-parameters.md) | Run Parameters & Programs | File types, program workflow |
+| [ch32](chapters/ch32-analysis.md) | Analysis [+tutorial] | RMSD/RMSF/RDF/MSD/hbond/clustering, **analysis workflow** |
 | [ch33](chapters/ch33-implementation.md) | Implementation Details | Virial, optimizations |
 | [ch34](chapters/ch34-averages.md) | Averages & Fluctuations | Formulae, implementation |
 | [ch35](chapters/ch35-bibliography.md) | Bibliography | Key references |
 | [ch36](chapters/ch36-developer-guide.md) | Developer Guide | Contributing, coding standards |
 | [ch37](chapters/ch37-doxygen.md) | Doxygen Documentation | API reference |
 | [ch38](chapters/ch38-release-notes.md) | Release Notes | 2026.2 changes |
-| [ch39](chapters/ch39-mdp-advanced.md) | Advanced MDP Parameters [+中文] | Free energy, AWH, pull, expanded ensemble, **中文高级MDP参数术语** |
+| [ch39](chapters/ch39-mdp-advanced.md) | Advanced MDP Parameters | Free energy, AWH, pull, expanded ensemble |
 | [ch40](chapters/ch40-tutorials.md) | Tutorials & Resources | Training materials, references |
 
 ## Topic Index
@@ -178,7 +180,9 @@ Use this **6-phase mental model** for every simulation project:
 - **CGenFF / Ligand parametrization** → ch08
 - **CHARMM** → ch8, ch26
 - **Checkpoint (.cpt)** → ch6, ch27
-- **Chinese theory / 中文理论** → ch17, ch19, ch20, ch22, ch23
+- **Chinese terminology / 中文术语** → all 40 chapters
+- **Chinese theory / 中文理论** → ch17-ch32, ch39 (comprehensive theory chapters)
+- **中文关键词** → 参见各章中文术语对照表
 - **CGenFF penalty scores** → ch08
 - **CMake** → ch2
 - **Colvars** → ch30
@@ -269,6 +273,6 @@ Use this **6-phase mental model** for every simulation project:
 
 This skill covers the GROMACS 2026.2 manual content, enriched with:
 - **Justin A. Lemkul's practical tutorials** (CC-BY 4.0) — workflow examples integrated into relevant chapters (ch05, ch08, ch16, ch21, ch25, ch28, ch32)
-- **Chinese manual theory notes** (v5.0.2, 李继存译) — terminology and theoretical exposition integrated into ch17, ch19, ch20, ch22, ch23
+- **Chinese manual** (GROMACS 2019.6 中文译版) — comprehensive Chinese terminology, theoretical exposition, formulas, and concepts integrated into all 40 chapters
 
 For hands-on implementation, combine with actual GROMACS command execution (Bash). For force field-specific details beyond what's covered, consult the force field's original publications. Tutorial content from mdtutorials.com is provided under CC-BY 4.0 by Justin A. Lemkul. For topics beyond this skill, check the GROMACS website (https://www.gromacs.org) or the GROMACS user forum (https://gromacs.bioexcel.eu).

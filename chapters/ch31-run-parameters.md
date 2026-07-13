@@ -78,33 +78,42 @@ Analysis tools ──→ .xvg output files
 
 ## 中文术语对照 (Chinese Terminology)
 
-**运行参数和程序** (来自中文手册 §7.1-7.3):
-
-| 中文 | English | 说明 |
-|------|---------|------|
+| 中文 | English | Notes |
+|------|---------|-------|
 | 在线手册 | Online manual | manual.gromacs.org |
-| HTML手册 | HTML manual | $GMXLIB/html/online.html |
-| UNIX手册页 | UNIX man pages | `man gmx-grompp` |
-| 文件类型 | File types | 表7.1列出所有文件类型 |
-| 运行参数 | Run parameters | .mdp文件中的所有参数 |
-| 预处理 | Preprocessing | grompp阶段 |
-| 运行控制 | Run control | 时间步数, 步长, 模拟时间 |
-| 邻区搜索 | Neighbor searching | nstlist, rlist, ns-type |
-| 静电 | Electrostatics | coulombtype, rcoulomb, PME参数 |
-| VdW | Van der Waals | vdwtype, rvdw, DispCorr |
-| 表格 | Tables | 用户自定义表格势能 |
-| Ewald | Ewald | fourierspacing, pme-order, ewald-rtol |
-| 温度耦合 | Temperature coupling | tcoupl, tc-grps, tau-t, ref-t |
-| 压力耦合 | Pressure coupling | pcoupl, pcoupltype, tau-p, ref-p, compressibility |
-| 模拟退火 | Simulated annealing | annealing, annealing-npoints |
-| 速度产生 | Velocity generation | gen-vel, gen-temp, gen-seed |
-| 键约束 | Bond constraints | constraints, constraint-algorithm |
-| 能量组排除 | Energy group exclusions | energygrp-excl |
-| 墙 | Walls | nwall, wall-type, wall-r-linpot |
-| 质心牵引 | COM pulling | pull code全部参数 |
-| NMR精修 | NMR refinement | NMR衍生约束 |
-| 自由能计算(运行参数) | Free energy (run params) | free-energy, couple-*, lambda向量 |
-| 扩展系综计算 | Expanded ensemble | expanded-ensemble, lmc-stats |
-| 非平衡MD | Non-equilibrium MD | acc-grps, accelerate 等 |
+| 文件类型 | File types | 参数/结构/拓扑/运行输入/轨迹/能量/其他七大类 |
+| 预处理 | Preprocessing | grompp将.gro+.top+.mdp+.ndx打包为.tpr |
+| 运行控制 | Run control | integrator/dt/nsteps/tinit/simulation-part |
+| 邻区搜索 | Neighbor searching | cutoff-scheme(Verlet)/nstlist/rlist/ns-type |
+| 静电 | Electrostatics | coulombtype(Cut-off/PME/Ewald/Reaction-Field)/rcoulomb |
+| Ewald求和参数 | Ewald parameters | fourierspacing/pme-order/ewald-rtol |
+| VdW | Van der Waals | vdwtype/rvdw/DispCorr(EnerPres) |
+| 温度耦合 | Temperature coupling | tcoupl(berendsen/v-rescale/nose-hoover)/tc-grps/tau-t/ref-t |
+| 压力耦合 | Pressure coupling | pcoupl/pcoupltype(berendsen/Parrinello-Rahman)/tau-p/ref-p/compressibility |
+| 模拟退火 | Simulated annealing | annealing/annealing-npoints/annealing-time |
+| 速度产生 | Velocity generation | gen-vel(从Maxwell分布)/gen-temp/gen-seed |
+| 键约束 | Bond constraints | constraints(all-bonds/h-bonds)/constraint-algorithm(LINCS/SHAKE) |
+| 能量监测组 | Energy monitoring groups | energygrps定义组间非键能量输出 |
+| 墙 | Walls | nwall/wall-type(9-3/10-4/12-6)/wall-r-linpot |
+| 质心牵引 | COM pulling | pull=yes启用，pull-coord*-*定义坐标参数 |
+| 自由能(运行参数) | Free energy parameters | free-energy/couple-moltype/couple-lambda0/1/couple-intramol |
+| Lambda向量 | Lambda vectors | fep-lambdas/coul-lambdas/vdw-lambdas/bonded-lambdas/restraint-lambdas/mass-lambdas |
+| 软核势 | Soft-core potential | sc-alpha/sc-power/sc-sigma/sc-sigma6 |
+| 扩展系综 | Expanded ensemble | expanded-ensemble/nstexpanded/lmc-stats/lmc-weights-equil |
+| 非平衡MD | Non-equilibrium MD | acc-grps(加速度组)/accelerate(加速度矢量) |
+| AWH参数 | AWH parameters | awh=yes/awh-nstout/awh-nstsample |
+| 强制旋转参数 | Enforced rotation params | rotation/rot-group*/rot-type/k/rate/vec/pivot |
+| 电场参数 | Electric field params | electric-field-x/E-xt/E0/omega/t0/sigma |
+| QM/MM参数 | QM/MM params | QMMM/QMMM-grps/QMmethod/QMbasis/QMcharge/QMmult |
+| NMR精修 | NMR refinement | NMR衍生距离/取向约束 |
 
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §7.1-7.3, CC-BY compatible.
+**关键概念**:
+- .mdp文件格式为 option = value，等号左侧的破折号与下划线等效
+- 不指定的选项会使用默认值，grompp生成的mdout.mdp列出所有选项及默认值
+- 温度耦合组: 每组可独立设定tau-t和ref-t，通常Protein和SOL+NPT分别耦合
+- 压力耦合: 各向同性(isotropic)/半各向同性(semiisotropic)/各向异性(anisotropic)/表面张力(surface-tension)
+- gen-vel在无.cpt重启文件时产生初始速度，gen-seed用于可重复性
+- 自由能lambda向量: 分量独立，可在同一模拟中线性关闭库仑再用软核关闭VDW
+- 非平衡MD: acc-grps和accelerate在选定组上施加恒定加速度
+
+Sources: GROMACS 2019.6 中文译版

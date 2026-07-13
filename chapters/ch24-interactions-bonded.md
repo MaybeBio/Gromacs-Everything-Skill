@@ -83,38 +83,61 @@ Bonded interactions are defined by the molecular topology and include bond stret
 
 ## 中文术语对照 (Chinese Terminology)
 
-**键合相互作用框架** (来自中文手册 §4.2):
-键合相互作用 = 键伸缩(双体) + 键角(三体) + 二面角(四体)。基于固定的原子列表计算。异常二面角用于保持平面或手性。
+| 中文 | English | Notes |
+|------|---------|-------|
+| 成键相互作用 | Bonded interactions | 基于固定原子列表：键伸缩(2体)+键角(3体)+二面角(4体) |
+| 键伸缩 | Bond stretching | 共价键i-j之间的简谐/非简谐势 |
+| 简谐键势 | Harmonic bond | V=½k^b(r_ij−b_ij)²，大多数力场使用 |
+| 四次幂键势 | GROMOS-96 quartic bond | V=¼k^b(r²−b²)²，不需开方，效率高 |
+| Morse势 | Morse potential | V=D[1−exp(−β(r−b))]²，不对称势阱，无穷远处力为零 |
+| 立方键势 | Cubic bond | V=½k^b(r−b)²+k^cub(r−b)³，OPLS/Ferguson柔性水 |
+| FENE势 | FENE potential | V=−½k^b·b²·ln(1−r²/b²)，粗粒化聚合物，短距→简谐 |
+| 键角弯曲 | Angle bending | i-j-k三联体的简谐/余弦势 |
+| 简谐角势 | Harmonic angle | V=½k^θ(θ−θ₀)²，单位kJ/mol/rad²，拓扑输入用度 |
+| GROMOS-96角势 | GROMOS cosine angle | V=½k^θ(cosθ−cosθ₀)²，力常数k^θ·sin²(θ₀)=k^(θ,harm) |
+| 受限弯曲势 | Restricted bending (ReB) | V=½k·(cosθ−cosθ₀)²/sin²θ，防止θ→180° |
+| Urey-Bradley势 | Urey-Bradley | V=½k^θ(θ−θ₀)²+½k^UB(r_ik−r⁰_ik)²，CHARMM特征 |
+| 键-键交叉项 | Bond-bond cross-term | V=k_rr'·(|r_i−r_j|−r₁e)·(|r_k−r_j|−r₂e) |
+| 键-角交叉项 | Bond-angle cross-term | V=k_rθ·(|r_i−r_k|−r₃e)·(|r_i−r_j|−r₁e+|r_k−r_j|−r₂e) |
+| 四次键角势 | Quartic angle | V=Σ_{n=0}⁴ C_n(θ−θ₀)^n |
+| 正常二面角 | Proper dihedral | 四原子i-j-k-l扭转，0°=顺式(cis) |
+| 周期性二面角 | Periodic dihedral | V=k_φ[1+cos(nφ−φ_s)]，AMBER/CHARMM/OPLS |
+| Ryckaert-Bellemans势 | RB dihedral | V=Σ_{n=0}⁵ C_n·cos^n(ψ), ψ=φ−180°，GROMOS/OPLS |
+| 傅里叶二面角 | Fourier dihedral | V=½[C₁(1+cosφ)+C₂(1−cos2φ)+C₃(1+cos3φ)+C₄(1−cos4φ)] |
+| OPLS→RB转换 | OPLS to RB conversion | C₀=F₂+½(F₁+F₃), C₁=½(−F₁+3F₃), C₂=−F₂+4F₄等 |
+| 异常二面角/反常二面角 | Improper dihedral | 维持平面基团(芳环)或手性 |
+| 受限扭转势 | Restricted torsion (ReT) | V=½k·(cosφ−cosφ₀)²/sin²φ，防止二面角跨区间 |
+| 组合弯曲扭转势 | Combined Bending-Torsion (CBT) | V=k_φ·sin³θ_{i−1}·sin³θ_i·Σ a_n·cos^n φ_i，粗粒化 |
+| CMAP修正 | CMAP correction | CHARMM专有，网格基φ/ψ二面角交叉项 |
+| 表格式成键相互作用 | Tabulated bonded | 三次样条插值，键/角/二面角均可定制表格 |
+| 排除 | Exclusions | 第一/第二相邻原子从LJ列表排除 |
+| 1-4相互作用 | 1-4 interactions | 第三相邻原子，分开列表，参数可缩放 |
+| 位置限制 | Position restraints | V=½k_pr|r_i−R_i|²，可三分量分别控制 |
+| 平底位置限制 | Flat-bottom position restraints | V=½k_fb[d_g(r_i;R_i)−r_fb]²·H[d_g−r_fb] |
+| 球/圆柱/层限制 | Sphere/Cylinder/Layer restraints | 平底势三种几何构造，可反转(r_fb负值) |
+| 角限制 | Angle restraints | V=k_ar(1−cos(n(θ−θ₀)))，两对原子间或与z轴夹角 |
+| 二面角限制 | Dihedral restraints | V=½k_dihr(φ'−Δφ)²，带平底区的惩罚势 |
+| 距离限制 | Distance restraints | 多重边界势，用于NMR结构精修 |
+| 时间平均距离限制 | Time-averaged distance restraints | ¯r_ij=⟨r_ij⁻³⟩^(−1/3)，衰减时间τ的指数运行平均 |
+| 多对平均 | Multi-pair averaging | r_N(t)=[Σ_n ¯r_n(t)^(−6)]^(−1/6)，NMR NOE信号用 |
+| 系综平均距离限制 | Ensemble-averaged distance restraints | 边界缩小r₁/=M^(−1/6)，M为分子数 |
+| 取向限制 | Orientation restraints | δ_i=⅔tr(SD_i)，NMR残留偶极耦合/化学位移各向异性 |
 
-| 中文 | English | 力场/说明 |
-|------|---------|-----------|
-| 键伸缩 | Bond stretching | 共价键的简谐/非简谐势 |
-| 简谐势 | Harmonic potential | V = ½k_b(b − b₀)², 大多数力场 |
-| 四次幂势 | Fourth power / GROMOS-96 | V = ¼k_b(b² − b₀²)² |
-| Morse势 | Morse potential | V = D_e[1 − exp(−β(b − b₀))]² |
-| 立方键伸缩 | Cubic bond | OPLS, 含三次修正项 |
-| FENE势 | FENE potential | 聚合物, ln形式 |
-| 键角弯曲 | Angle bending | 三体相互作用 |
-| 简谐角势 | Harmonic angle | AMBER/CHARMM/OPLS |
-| GROMOS-96角势 | GROMOS angle | ½k_θ(cos θ − cos θ₀)² |
-| 余弦键角势 | Cosine-based angle | GROMOS变体 |
-| Urey-Bradley势 | Urey-Bradley | CHARMM, 含1-3距离项 |
-| 受限弯曲势 | Restricted bending | 平底势, ReaxFF |
-| 键键交叉项 | Bond-bond cross-term | 键-键耦合 |
-| 键-角交叉项 | Bond-angle cross-term | 键-角耦合 |
-| 正常二面角 | Proper dihedral | 四原子扭转 (i,j,k,l) |
-| 异常二面角 | Improper dihedral | 维持平面/手性 |
-| Ryckaert-Bellemans | RB dihedral | GROMOS/OPLS, C_n·cosⁿ(ψ) |
-| 周期性二面角 | Periodic dihedral | AMBER/CHARMM/OPLS |
-| CMAP修正 | CMAP correction | CHARMM专有, 网格基φ/ψ交叉项 |
-| 表格键合相互作用 | Tabulated bonded | 数值形式的相互作用 |
-| 1-4相互作用 | 1-4 interactions | 间隔3个键的非键作用, fudgeLJ/fudgeQQ缩放 |
-| 位置限制 | Position restraints | ½k_pr(r − R_ref)², 平衡时使用 |
-| 距离限制 | Distance restraints | 上下界平底势, NMR约束 |
-| 角限制 | Angle restraints | 类似距离限制, 用于NMR |
-| 取向限制 | Orientation restraints | NMR RDC约束 |
-| 二面角限制 | Dihedral restraints | NMR J-耦合约束 |
-| 极化 | Polarization | 壳层模型, Thole极化 |
-| 自由能相互作用 | Free energy interactions | 软核势, λ耦合 |
+**关键概念**:
+1. **键伸缩势选择**: 简谐(多数力场)、GROMOS四次幂(效率高但非简谐)、Morse(非对称势阱)、立方(OPLS)、FENE(聚合物)。Morse简谐极限: exp(−βx)≈1−βx → V≈½k(r−b)²
+2. **RB vs 周期性二面角**: RB使用cosⁿ(ψ), ψ=φ−180°; 周期性使用cos(nφ−φ_s)。OPLS肽保留1-4相互作用+RB; GROMOS烷烃排除1-4+RB
+3. **受限弯曲势(ReB)**: 分母含sin²θ，防止θ→180°。平衡角θ₀不能太接近0°或180°(推荐至少10°差)。可与标准弯曲势组合使用
+4. **CBT势**: 含sin³θ_{i−1}·sin³θ_i前因子，弯曲角→180°时扭转势自动抵消。在[−180°:180°]内只有一个最小值(非对称需用其他势)
+5. **距离限制NMR**: r⁻³运行平均防止过于刚性; 多对r⁻⁶加和(物理基础); 守恒vs等力分配; 系综平均边界降M^(−1/6); 混合法防质子被拉得过近
 
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §4.2-4.4, CC-BY compatible.
+**重要公式**:
+- 简谐键: V_b=½k^b(r−b)², F=k^b(r−b)·r_ij/r_ij
+- GROMOS四次幂: V=¼k^b(r²−b²)², F=k^b(r²−b²)·r_ij
+- Morse: V=D[1−exp(−β(r−b))]², F=2Dβ·exp(−β(r−b))·[1−exp(−β(r−b))]
+- FENE: V=−½k·b²·ln(1−r²/b²), F=−k·(1−r²/b²)^(−1)·r
+- 余弦角势: V=½k^θ(cosθ−cosθ₀)², k^(θ,harm)=k^θ·sin²(θ₀)
+- 周期性二面角: V=k_φ[1+cos(nφ−φ_s)]
+- RB二面角: V=Σ_{n=0}⁵ C_n·cos^n(ψ), ψ=φ−180°
+- 位置限制: V_pr=½k_pr|r_i−R_i|², F=−k_pr(r_i−R_i)
+
+Sources: GROMACS 2019.6 中文译版, §5.5.2-5.5.3

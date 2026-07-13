@@ -201,3 +201,135 @@
 **速度重缩放 (V-rescale)** — 带有随机项的速度重缩放恒温器，产生正确的正则系综 (ch17/ch19/ch20)
 
 **系综 (Ensemble)** — 统计力学术语，NVT(正则)/NPT(等温等压)/NVE(微正则)等 (ch17/ch19/ch20)
+
+## 中文术语扩展 (Extended Chinese Terminology)
+
+_来源：GROMACS 2019.6 中文译版_
+
+**牛顿运动方程 / Newton's Equations of Motion** — MD 模拟求解的核心方程：m_i * d²r_i/dt² = F_i (ch17/ch19)
+
+**周期性边界条件 / Periodic Boundary Conditions (PBC)** — 最小映像约定，截断半径不能超过盒子大小的一半 (ch19)
+
+**邻居列表 / Neighbor List** — 将O(N^2)配对搜索分摊到nstlist步骤上，减少计算成本 (ch33)
+
+**区域分解 / Domain Decomposition** — 将模拟盒子在空间上划分为多个域，分配到不同MPI进程 (ch22/ch33)
+
+**维里 / Virial** — 压力计算的物理量，为所有力加和，混合精度情况下其波动可能比平均值大两个数量级 (ch33)
+
+**最陡下降法 / Steepest Descent** — 沿负梯度方向前进的能量最小化方法，简单稳健但收敛可能慢 (ch21)
+
+**共轭梯度法 / Conjugate Gradient** — 使用前步梯度信息的能量最小化方法，在极小点附近收敛快 (ch21)
+
+**Born-Oppenheimer近似 / Born-Oppenheimer Approximation** — 电子基态近似假设，原子位置变化时电子瞬时调整 (ch17)
+
+**模拟退火 / Simulated Annealing** — 高温模拟后缓慢降温来搜索全局极小值的方法 (ch33)
+
+**保守力场 / Conservative Force Field** — 仅依赖于原子位置的势能函数，不包含电子运动 (ch08)
+
+**截断半径 / Cutoff Radius** — Lennard-Jones和库仑相互作用的距离限制 (ch09/ch25)
+
+**量子校正 / Quantum Correction** — 对经典谐振子的能量和比热进行量子力学修正 (ch34)
+
+**块平均 / Block Averaging** — 将轨迹分块计算平均值，用块平均值之间的方差估计标准误差 (ch34)
+
+**自相关函数 / Autocorrelation Function (ACF)** — 衡量数据点之间时间关联性的函数 (ch34)
+
+**涨落性质 / Fluctuation Properties** — 从能量涨落计算热容、压缩系数、热膨胀系数等 (ch34)
+
+**软核势 / Soft-core Potentials** — 修改的LJ/库仑函数形式，防止lambda中值处的奇点，参数sc-alpha=0.5, sc-power=1, sc-sigma=0.3 (ch21/ch25)
+
+**解耦 (炼金术变换) / Decoupling (Alchemical Transformation)** — 通过lambda标度系统地移除溶质-溶剂相互作用：先放电(Coulomb→0)再解耦vdW(LJ→0) (ch21)
+
+**伞形采样 / Umbrella Sampling** — 沿反应坐标设置多个独立模拟窗口，每个窗口施加简谐限制，WHAM重构无偏PMF (ch28)
+
+**平均力势 / Potential of Mean Force (PMF)** — 沿反应坐标的自由能函数，通过伞形采样或AWH等方法计算 (ch28)
+
+**加权直方图分析方法 / WHAM (Weighted Histogram Analysis Method)** — 通过解卷积已知偏置势函数，从伞形采样直方图重构无偏PMF (ch28)
+
+**反应坐标 / Reaction Coordinate** — 计算PMF所沿的自由度（如两组质心距离），必须具有物理意义 (ch28)
+
+**Lambda窗口 / Lambda Window** — 耦合参数λ的离散值；对于BAR收敛，需要20+个窗口(Δλ ≈ 0.05) (ch21)
+
+**拉伸模拟 / Pulling Simulation** — SMD类模拟，简谐限制沿反应坐标以指定速率移动，为伞形采样窗口提供起始构型 (ch28)
+
+**膜蛋白嵌入 / Membrane Protein Embedding (membed)** — ProtSqueeze技术：xy平面收缩蛋白质→删除重叠脂质→逐步恢复蛋白质原子 (ch16)
+
+**半各向同性压力耦合 / Semi-isotropic Pressure Coupling** — xy平面和z方向分别独立耦合压力，膜模拟必需 (ch16/ch20)
+
+**面积/脂质 (Area per Lipid)** — 膜模拟关键验证量，DPPC实验值约62-64 Å² (ch16)
+
+**Berger脂质 / Berger Lipids** — 联合原子脂质参数，组合GROMOS原子类型和OPLS部分电荷 (ch16)
+
+**CGenFF惩罚分数 / CGenFF Penalty Score** — 每个参数的质量指标：<10可靠使用，10-50验证后使用，>50需要手动重新参数化 (ch08)
+
+**配体参数化 / Ligand Parametrization** — 为非标准残基生成拓扑/参数的过程，需要特定力场族的外部工具/服务器 (ch08)
+
+**虚拟位点 / Virtual Sites** — 由真实原子构建的无质量相互作用中心，消除高频键振动，允许dt=4-5 fs (ch25)
+
+**氢键标准 (GROMACS)** — 供体-H距离 ≤ 0.35 nm 且 供体-受体-H角度 ≤ 30° (ch05)
+
+**InflateGRO** — Perl脚本：膨胀脂质(scale>1)→删除重叠脂质→逐步收缩(scale<1)至目标面积/脂质 (ch16)
+
+**水删除器 / Water Deletor** — 删除脂质双层疏水核心中水分子的自定义Perl脚本 (ch16)
+
+**插入分子 / gmx insert-molecules** — 通过位阻冲突检测向模拟盒子添加分子，用于非水溶剂的添加 (ch16)
+
+**pdb2gmx** — 将PDB文件转换为GROMACS拓扑(.top)和结构(.gro)，自动选择力场和水模型 (ch13)
+
+**电荷中性化 / Charge Neutralization** — gmx genion替换溶剂分子为离子，以中和总电荷或设置盐浓度 (ch05/ch16)
+
+**约束算法 / Constraint Algorithm** — LINCS(默认)/SHAKE/SETTLE保持键长不变，允许更大时间步长 (ch20)
+
+**积分器 / Integrator** — 蛙跳式(默认)/Velocity Verlet/随机动力学(sd)，求解运动方程 (ch19)
+
+**恒温器 / Thermostat** — 温度耦合方法：Berendsen(快速但近似)/V-rescale(正确NVT)/Nose-Hoover(扩展系综) (ch20)
+
+**恒压器 / Barostat** — 压力耦合方法：Berendsen(快速初始化)/Parrinello-Rahman(正确NPT) (ch20)
+
+**粒子网格Ewald / Particle-Mesh Ewald (PME)** — 使用FFT网格高效计算长程静电相互作用 (ch25)
+
+**能量最小化 / Energy Minimization (EM)** — 移除动能和结构异常，起始结构预处理必需步骤 (ch21)
+
+**力场 / Force Field** — 提供原子间相互作用参数：AMBER, CHARMM, GROMOS, OPLS等 (ch08)
+
+**混合精度 / Mixed Precision** — 状态向量(坐标/速度/力)单精度，关键变量双精度，默认选项 (ch33)
+
+**双精度 / Double Precision** — 所有变量双精度，比混合精度慢20%-100%，用于简正分析等 (ch33)
+
+**自由能微扰 / Free Energy Perturbation (FEP)** — 从系综平均计算自由能差的方法 (ch21)
+
+**热力学积分 / Thermodynamic Integration (TI)** — 沿lambda路径积分∂H/∂λ的自由能方法 (ch21)
+
+**Bennett接受率法 / Bennett Acceptance Ratio (BAR)** — 比TI更高效的自由能计算方法 (ch21)
+
+**扩展系综 / Expanded Ensemble** — 在单次模拟中采样多个状态（如lambda值）的方法 (ch21)
+
+**副本交换 / Replica Exchange** — 不同温度/哈密顿量的副本之间交换构型的并行模拟方法 (ch21)
+
+**加速权重直方图 / Accelerated Weight Histogram (AWH)** — 沿反应坐标的自适应偏置自由能计算方法 (ch29)
+
+**简正模式分析 / Normal Mode Analysis** — 计算简正模式频率，分析振动谱和热化学性质 (ch34)
+
+**主成分分析 / Principal Component Analysis (PCA)** — 又称为本质动力学，关注集体运动 (ch21/ch32)
+
+**均方根偏差 / RMSD** — 结构比较指标，蛋白质稳定性分析 (ch32)
+
+**均方根涨落 / RMSF** — 每个原子/残基的柔性度量，蛋白质局部运动分析 (ch32)
+
+**径向分布函数 / Radial Distribution Function (RDF)** — 对相关函数g(r)，结构分析使用 (ch32)
+
+**偶极矩 / Dipole Moment** — 总偶极及其涨落，介电常数计算 (ch32)
+
+**Lennard-Jones势 / Lennard-Jones Potential** — V_LJ = 4ε[(σ/r)^12-(σ/r)^6]，非键排斥和色散 (ch23)
+
+**色散校正 / Dispersion Correction** — 长程LJ相互作用平均校正，脂质单层使用 (ch25)
+
+**自由能计算 / Free Energy Calculation** — 结合自由能/溶剂化自由能计算 (ch21/ch28)
+
+**可转移分子间势能 / Transferable Intermolecular Potential** — TIP3P/TIP4P/SPC等水模型 (ch05)
+
+**拓扑文件 / Topology File (.top/.itp)** — 系统组成、力场参数、化学结构 (ch26)
+
+**运行输入文件 / Run Input File (.tpr)** — 二进制文件，包含所有模拟参数和坐标 (ch27)
+
+**轨迹文件 / Trajectory File (.xtc/.trr)** — 坐标随时间变化，.xtc压缩格式用于分析 (ch27)

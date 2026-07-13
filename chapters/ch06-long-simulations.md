@@ -77,3 +77,25 @@ gmx mdrun -s topol.tpr -reprod
 - **Ch 10**: mdrun features (rerun, multi-simulation)
 - **Ch 15**: Validation and reproducibility
 - **Ch 27**: .cpt file format details
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 长时间模拟 | long simulations | 需要检查点重启 |
+| 检查点文件 | checkpoint file (.cpt) | 全精度坐标和速度 |
+| 追加输出 | appending output | 默认行为 |
+| 校验码 | checksum | 验证输出文件完整性 |
+| 备份文件 | backup files | rsync 定期复制 |
+| 延长 tpr | extending tpr | gmx convert-tpr -extend |
+| 续跑 | continuation | 从检查点继续 |
+| 精确续跑 | exact continuation | 二进制相同的结果 |
+| 重现性 | reproducibility | 相同硬件+相同输入 |
+| 混沌性 | chaotic nature of MD | 轨迹迅速发散 |
+| 动态负载均衡 | dynamic load balancing | 影响可重现性 |
+| 终止信号 | termination signals | SIGTERM, SIGUSR1, Ctrl-C |
+| 文件截断 | file truncation | 不连续输出时 |
+
+**关键概念**: GROMACS 支持通过检查点文件实现精确的模拟续跑。检查点文件保存全精度的位置、速度和算法状态信息，重启时可以做到与不中断的连续运行完全等价。默认情况下重启会追加到已有输出文件，使用 -noappend 可强制写入新文件。检查点文件维护每个输出文件的校验码，如果输出文件在 mdrun 写入后被修改或删除，追加会失效。模拟的精确重现需要相同可执行文件+相同硬件+相同共享库+相同输入文件+相同命令行参数。受浮点运算的不可结合性和动态负载均衡的影响，即使使用检查点续跑，并行模拟的长期轨迹也会发散。
+
+Sources: GROMACS 2019.6 中文译版 (§3.3)

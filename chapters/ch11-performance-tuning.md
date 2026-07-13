@@ -97,3 +97,26 @@ gmx mdrun -version 2>&1 | grep SIMD
 - **Ch 2**: Build configuration
 - **Ch 9**: MDP performance-relevant parameters
 - **Ch 22**: Parallelization algorithms
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 性能检查清单 | performance checklist | 构建+运行优化 |
+| 区域分解 | domain decomposition | 空间并行化 |
+| 动态负载均衡 | dynamic load balancing | 根据挂钟时间重新分配粒子 |
+| GPU 驻留模式 | GPU-resident mode | 全部计算在 GPU 上 |
+| 多 GPU | multi-GPU | PP 和 PME 秩分离 |
+| SIMD 优化 | SIMD optimization | 核内指令级并行 |
+| PME 调优 | PME tuning | gmx tune_pme |
+| OpenMP 线程 | OpenMP threading | 节点内并行 |
+| 标度极限 | scaling limit | 硬件性能上限 |
+| 节点级并行 | node-level parallelization | GPU+线程MPI |
+| 多节点运行 | multi-node execution | MPI 跨节点 |
+| 基准测试 | benchmark | 标准测试体系 |
+| 性能回归 | performance regression | 性能下降 |
+| AVX2优于AVX512 | AVX2 preferred over AVX512 | GPU 或高并行 MPI |
+
+**关键概念**: GROMACS 的性能优化分为构建配置和运行设置两个层面。构建层面：使用单精度，选择最佳 SIMD（AVX2 通常优于 AVX512 在 GPU 运行中），用最新编译器版本。运行层面：使用菱形十二面体盒子节省 29% 溶剂，constraints=h-bonds 是 GPU 驻留模式的前提条件，使用 gmx tune_pme 优化 PME 进程数。GPU 驻留模式将所有力计算和积分放到 GPU 上实现最高性能。多节点运行时，区域分解将盒子分成子区域，每个 MPI 秩负责一个区域，至少需要 ~500 原子/核才能高效并行。中文手册提供了完整的性能检查清单和优化指南。
+
+Sources: GROMACS 2019.6 中文译版 (§2.3.6, §3.10)

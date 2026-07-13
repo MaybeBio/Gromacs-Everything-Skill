@@ -48,3 +48,25 @@ GROMACS 2026.2 has several known platform-specific issues that users should chec
 ## Connects To
 - **Ch 2**: Installation guide — platform-specific compilation instructions
 - **Ch 11**: Performance tuning — platform-specific optimization
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 已知问题 | known issues | 特定平台/编译器 |
+| 兼容性 | compatibility | 编译器/硬件组合 |
+| 致命错误 | fatal error | 编译/运行时的严重问题 |
+| 警告信息 | warning message | 可接受或需关注 |
+| 测试过的平台 | tested platforms | 官方验证的配置 |
+| 基准测试 | benchmark | 性能参考数据 |
+| 交叉编译 | cross-compilation | 不同架构间编译 |
+| 平台特别说明 | platform-specific notes | 各架构的特殊要求 |
+| 构建失败 | build failure | 编译过程中出错 |
+| 性能回归 | performance regression | 性能显著下降 |
+| 检查点 | checkpoint | 扩展系综的检查点问题 |
+| 标准库 | standard library | libstdc++ 兼容性 |
+| SIMD 不匹配 | SIMD mismatch | CPU 指令集不兼容 |
+
+**关键概念**: GROMACS 在不同平台上可能存在特定的兼容性问题。常见的已知问题类型包括：编译器版本不兼容（如 GCC 12-14 在 POWER9 上）、GPU 驱动/工具包版本冲突、SIMD 指令集不匹配导致的性能退化。用户应在构建前检查已知问题列表，使用推荐的最新编译器版本（gcc 为最佳选择）。如遇到问题，首先检查 CMake 缓存中的检测结果，确认编译器、FFT 库和 GPU 后端的配置是否正确。对于 ARM/SVE 等新兴架构，编译器和数学库的版本选择尤为关键。
+
+Sources: GROMACS 2019.6 中文译版 (§2.4-2.6)

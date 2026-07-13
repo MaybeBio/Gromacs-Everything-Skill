@@ -48,29 +48,46 @@ Used in some specialized contexts where quantities are expressed in dimensionles
 
 ## 中文术语对照 (Chinese Terminology)
 
-**符号约定** (来自中文手册 §2.1):
-| 中文 | English |
-|------|---------|
-| 矢量/粗斜体 | Vector (bold italic): **r**_i |
-| 矢量长度/斜体 | Scalar (italic): _r_i |
-| 位置矢量 | Position vector: **r**_i |
-| 粒子间矢量 | Inter-particle vector: **r**_ij = **r**_j − **r**_i |
-| 粒子间距离 | Inter-particle distance: r_ij = |**r**_ij| |
-| 力 | Force: **F**_i |
+| 中文 | English | Notes |
+|------|---------|-------|
+| 矢量/粗斜体 | Vector (bold italic) | 如 r_i，位置向量 |
+| 向量长度/斜体 | Scalar (italic) | 如 r_i，标量距离 |
+| 位置矢量 | Position vector | r_i，粒子 i 的位置 |
+| 粒子间矢量 | Inter-particle vector | r_ij = r_j − r_i |
+| 粒子间距离 | Inter-particle distance | r_ij = |r_ij| |
+| 力矢量 | Force vector | F_i，作用于粒子 i 的力 |
+| 长度单位 | Length | nm (10⁻⁹ m)，基本MD单位 |
+| 质量单位 | Mass | u (原子质量单位) = 1.66054×10⁻²⁷ kg |
+| 时间单位 | Time | ps (10⁻¹² s)，基本MD单位 |
+| 电荷单位 | Charge | e (基元电荷) = 1.60218×10⁻¹⁹ C |
+| 温度单位 | Temperature | K，基本MD单位 |
+| 能量单位 | Energy | kJ/mol，导出单位 |
+| 力单位 | Force | kJ mol⁻¹ nm⁻¹，导出单位 |
+| 压力单位 | Pressure | bar，导出单位 |
+| 速度单位 | Velocity | nm/ps = 1000 m/s |
+| 偶极矩单位 | Dipole moment | e·nm |
+| 电势单位 | Electric potential | kJ mol⁻¹ e⁻¹ ≈ 0.010364 V |
+| 电场单位 | Electric field | kJ mol⁻¹ nm⁻¹ e⁻¹ ≈ 1.037×10⁷ V/m |
+| 静电转换因子 | Electrostatic constant f | f = 1/(4πε₀) = 138.935458 kJ mol⁻¹ nm e⁻² |
+| Boltzmann/气体常数 | k_B and R (same value) | 0.0083144621 kJ mol⁻¹ K⁻¹ (MD单位中 k_B = R) |
+| 普朗克常数 | Planck constant h | 0.399031271 kJ mol⁻¹ ps |
+| 狄拉克常数 | Dirac constant ℏ | 0.0635077993 kJ mol⁻¹ ps |
+| 光速 | Speed of light c | 299792.458 nm/ps |
+| 阿伏加德罗常数 | Avogadro's number N_AV | 6.02214129×10²³ mol⁻¹ |
+| 约化单位 | Reduced units | ε_ii = σ_ii = m_i = k_B = 1, 用于LJ系统 |
+| 混合精度 | Mixed precision | 关键变量双精度，状态向量单精度，默认配置 |
+| 双精度 | Double precision | 比混合精度慢20%-100%，需cmake -DGMX_DOUBLE=on |
 
-**MD单位** (来自中文手册 §2.2-2.3):
-| 中文 | English | 单位 |
-|------|---------|------|
-| 长度 | Length | nm (1 nm = 10 Å) |
-| 时间 | Time | ps (1 ps = 10⁻¹² s) |
-| 质量 | Mass | u (原子质量单位, 1.66054×10⁻²⁷ kg) |
-| 能量 | Energy | kJ/mol |
-| 温度 | Temperature | K |
-| 电荷 | Charge | e (电子电荷) |
-| 压力 | Pressure | bar |
-| 力 | Force | kJ/mol/nm |
-| MD单位 | MD units | nm, ps, K, e, u 为基本单位 |
-| 约化单位 | Reduced units | 基于LJ参数σ, ε的无量纲单位 |
-| Boltzmann常数 | Boltzmann constant | 隐含在温度因子中 |
+**关键概念**:
+1. **MD单位系统自洽**: 基本单位为 nm, ps, e, u, K。所有导出单位由此计算。不可随意修改单位，否则会导致不自洽。例如用Å代替nm则时间单位变为0.1 ps；用kcal/mol代替kJ/mol则时间单位变为0.488882 ps
+2. **k_B = R**: 在MD单位中，Boltzmann常数和理想气体常数无区别，均为 0.0083144621 kJ mol⁻¹ K⁻¹。这是以摩尔为单位计算的结果
+3. **约化温度特例**: 约化单位的温度是实际k_B T的 0.008314...倍。GROMACS温度 T=1 对应约化温度约0.008；约化温度=1时GROMACS温度应为120.27236
+4. **混合精度足够**: 能量精确到最后一位，力的最后一位或两位不重要。维里精度比力差。MD混沌性导致混合精度轨迹比双精度发散更快
+5. **双精度适用场景**: 简正模式分析、Hessian矩阵计算/对角化、长时间能量守恒(大系统)
 
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §2.1-2.3, CC-BY compatible.
+**重要公式**:
+- 静电转换: V = f·q²/r, F = f·q²/r², 其中 f = 1/(4πε₀) = 138.935458
+- 电势/电场: Φ(r) = f·Σ_j q_j/|r−r_j|, E(r) = f·Σ_j q_j·(r−r_j)/|r−r_j|³
+- LJ势(约化单位): V_LJ = 4ε[(σ/r)¹² − (σ/r)⁶]
+
+Sources: GROMACS 2019.6 中文译版, §5.3

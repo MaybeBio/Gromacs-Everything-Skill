@@ -165,24 +165,28 @@ continuation        = yes
 
 ## 中文术语对照 (Chinese Terminology)
 
-**MDP运行参数** (来自中文手册 §7.3):
+| 中文 | English | Notes |
+|------|---------|-------|
+| 预处理 | preprocessing | include / define |
+| 运行控制 | run control | integrator / dt / nsteps |
+| 积分器 | integrator | md, md-vv, sd, steep, cg 等 |
+| 时间步长 | time step (dt) | 标准 0.002 ps (2 fs) |
+| 步数 | number of steps (nsteps) | -1 表示无上限 |
+| 输出控制 | output control | nstxout / nstvout / nstenergy |
+| 邻区搜索/邻居列表 | neighbor searching / neighbor list | nstlist / rlist / verlet-buffer-tolerance |
+| 截断方案 | cutoff scheme | 默认 Verlet，组方案已废弃 |
+| 库仑相互作用 | Coulomb interaction | coulombtype / rcoulomb |
+| PME (粒子网格Ewald) | Particle-Mesh Ewald | fourierspacing / pme-order |
+| 范德华相互作用 | van der Waals | vdwtype / rvdw / DispCorr |
+| 温度耦合/控温器 | temperature coupling / thermostat | tcoupl / tc-grps / tau-t / ref-t |
+| 压力耦合/控压器 | pressure coupling / barostat | pcoupl / pcoupltype / tau-p / ref-p |
+| 键约束 | bond constraints | constraints / constraint-algorithm |
+| LINCS 算法 | LINCS algorithm | 线性约束求解器，默认 |
+| 速度产生 | velocity generation | gen-vel / gen-temp / gen-seed |
+| 能量最小化容差 | EM tolerance | emtol / emstep |
+| 质心牵引 | center-of-mass pulling | pull / pull-ncoords |
+| 自由能计算 | free energy calculation | free-energy / couple-lambda 等 |
 
-| 分类 | 中文 | English |
-|------|------|---------|
-| 通用 | 积分器/步长/步数/时间 | integrator / dt / nsteps / t |
-| 预处理 | 周期性/定义 | pbc / define |
-| 运行控制 | 初始速度生成/温度/随机种子 | gen-vel / gen-temp / gen-seed |
-| 输出控制 | 坐标/速度/力/能量/日志输出频率 | nstxout / nstvout / nstfout / nstenergy / nstlog |
-| 邻区搜索 | 列表更新频率/截断方案/列表半径 | nstlist / cutoff-scheme / rlist |
-| 静电 | 库仑类型/截断/PME网格间距/阶数 | coulombtype / rcoulomb / fourierspacing / pme-order |
-| VdW | 范德华类型/截断/色散校正 | vdwtype / rvdw / DispCorr |
-| Ewald | EWALD精度/实空间截断 | ewald-rtol |
-| 温度耦合 | 耦合方法/组/时间常数/参考温度 | tcoupl / tc-grps / tau-t / ref-t |
-| 压力耦合 | 耦合方法/类型/时间常数/参考压力/压缩系数 | pcoupl / pcoupltype / tau-p / ref-p / compressibility |
-| 约束 | 约束/算法/迭代/阶数 | constraints / constraint-algorithm / lincs-iter / lincs-order |
-| 能量最小化 | 容差/步长 | emtol / emstep |
-| 速度产生 | 产生/温度/种子 | gen-vel / gen-temp / gen-seed |
-| 墙 | 墙数/类型 | nwall / wall-type |
-| 牵引 | 牵引/坐标数/几何/组 | pull / pull-ncoords / pull-coord1-geometry |
+**关键概念**: .mdp 文件包含模拟的所有设置参数。最重要的参数包括：积分器（md 为默认蛙跳积分器）、时间步长（标准 2 fs 配合 h-bonds 约束）、邻区搜索（Verlet 方案为默认且唯一推荐）、库仑类型（PME 为长程静电标准方法）、温度耦合（v-rescale 为最稳健选择）、压力耦合（Parrinello-Rahman 为生产模拟标准）、以及约束（constraints=h-bonds 配合 LINCS 算法）。中文手册的 mdp 选项按照预处理、运行控制、输出控制、邻区搜索、静电、VdW、温度耦合、压力耦合、约束、速度产生、牵引和自由能计算等主题组织。
 
-Sources: GROMACS 5.0.2 中文手册 (李继存译) §7.3, CC-BY compatible.
+Sources: GROMACS 2019.6 中文译版 (§3.8)

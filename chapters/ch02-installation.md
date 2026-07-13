@@ -92,3 +92,27 @@ Building GROMACS 2026.2 on a Linux workstation with NVIDIA GPU:
 - **Ch 11**: Performance tuning after installation
 - **Ch 3**: Known issues with specific compiler/platform combinations
 - **Ch 12**: Common build errors
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 源外构建 | out-of-source build | CMake 推荐方式 |
+| 构建目录 | build directory | 独立于源码目录 |
+| 编译器 | compiler | 推荐 gcc 最新版本 |
+| 快速傅里叶变换 | Fast Fourier Transform (FFT) | 必需库，推荐 FFTW3 |
+| 单精度/双精度 | single/double precision | 默认混合精度模式 |
+| SIMD 指令集 | SIMD instruction set | SSE2, AVX, AVX2, AVX-512 等 |
+| MPI 并行 | MPI parallelization | 多节点运行需要 MPI |
+| OpenMP 线程 | OpenMP threading | 单节点内并行 |
+| CUDA GPU 加速 | CUDA GPU acceleration | NVIDIA GPU |
+| OpenCL GPU 加速 | OpenCL GPU acceleration | 跨厂商 GPU |
+| 共享库/静态库 | shared/static libraries | 链接方式 |
+| 回归测试路径 | regression test path | 验证构建正确性 |
+| 安装前缀 | install prefix | CMAKE_INSTALL_PREFIX |
+| 调试模式 | Debug build type | 开发时使用 |
+| 只构建 mdrun | build mdrun only | 集群后端节点 |
+
+**关键概念**: GROMACS 使用 CMake 构建系统（版本 3.4.3+）。推荐流程是"源外构建" -- 在源代码目录外创建独立的构建目录。最重要的构建选项包括：-DGMX_GPU 选择 GPU 后端，-DGMX_MPI 启用 MPI，-DGMX_FFT_LIBRARY 选择 FFT 库。对多数用户，FFTW3 提供最佳性能，可使用 -DGMX_BUILD_OWN_FFTW=ON 让 CMake 自动下载构建。单精度（默认混合精度）即可满足绝大多数模拟需求。构建完成后使用 make check 验证正确性，source GMXRC 设置环境。
+
+Sources: GROMACS 2019.6 中文译版 (§2.1-2.3)

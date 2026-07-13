@@ -110,3 +110,27 @@ Never modify the original force field directory — always work on a copy.
 - **Ch 25**: Force field interaction function details
 - **Ch 26**: Topology file structure
 - **Ch 43** (Legacy Reference): Full ligand tutorial walkthrough (archived in book-to-skill source)
+
+## 中文术语对照 (Chinese Terminology)
+
+| 中文 | English | Notes |
+|------|---------|-------|
+| 力场 | force field | 描述分子相互作用的势能函数 |
+| 联合原子力场 | united-atom force field | 无显式脂肪族氢原子 |
+| 全原子力场 | all-atom force field | 显式所有原子 |
+| 组合规则 | combination rule | 原子对参数的导出方法 |
+| Lorentz-Berthelot 规则 | Lorentz-Berthelot rule | AMBER/CHARMM 使用 |
+| 几何平均规则 | geometric combination rule | GROMOS 使用 |
+| 非键截断方案 | non-bonded cutoff scheme | 默认 Verlet 方案 |
+| 缓冲配对列表 | buffered pair list | Verlet 方案的核心 |
+| 电荷组 | charge group | 组方案中的概念，Verlet 方案忽略 |
+| 色散校正 | dispersion correction | 脂质单层需要 |
+| 力切换 | force-switch | CHARMM 的 vdW 修饰 |
+| CMAP 修正 | CMAP correction | CHARMM 骨架二面角格点修正 |
+| 残基命名约定 | residue naming conventions | AMBER 特定要求 |
+| 终端处理 | terminus handling | N 端/C 端修饰 |
+| 力场移植 | force field porting | 不同格式间的转换 |
+
+**关键概念**: GROMACS 原生支持 AMBER、CHARMM、GROMOS 和 OPLS 四大力场家族。AMBER 最适合蛋白质体系，CHARMM36 在蛋白质-膜体系中有最佳表现，GROMOS 是联合原子力场（计算量更轻），OPLS 适用于小分子和有机液体。2019.6 版本默认使用基于缓冲 Verlet 列表的截断方案，之前的组方案已被废弃。Verlet 方案提供了精确截断，几乎支持所有算法，且 GPU 加速只能使用 Verlet 方案。使用 CHARMM36 时，需要注意 vdw-modifier=force-switch 的特殊设置和色散校正仅适用于脂质单层。
+
+Sources: GROMACS 2019.6 中文译版 (§3.5-3.6)

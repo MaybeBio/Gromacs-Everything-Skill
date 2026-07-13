@@ -217,3 +217,77 @@
 4. Set `constraints=all-bonds` in .mdp
 5. Use dt = 0.004 or 0.005 ps
 **Trade-offs**: HMR (mass repartitioning) is simpler but only reaches 4 fs. Virtual sites reach 5 fs but require manual topology editing.
+
+---
+
+## Chinese Workflow Patterns (中文工作流程)
+
+_Sources: GROMACS 2019.6 中文译版_
+
+### 自由能计算流程 (Free Energy Calculation Workflow)
+**When to use**: 计算结合自由能、溶剂化自由能、相对结合自由能 (ch21/ch28)
+**How**:
+1. 准备系统：定义要解耦的分子类型（couple-moltype）
+2. 设置 `free-energy = yes` 在 .mdp 中
+3. 定义 lambda 进度：`couple-lambda0 = vdw-q`, `couple-lambda1 = none`
+4. 双阶段解耦：先放电(Coulomb→0)再解耦vdW(LJ→0)
+5. 使用软核势：`sc-alpha = 0.5`, `sc-power = 1`, `sc-sigma = 0.3`
+6. 每个lambda窗口：EM → NVT → NPT → 成品MD
+7. 提取 ∂H/∂λ: `nstdhdl = 10`
+8. 用 `gmx bar` 分析获得 ΔG
+**Trade-offs**: 20+ lambda窗口需要。BAR比TI更高效但需要相位空间重叠
+**中文关键参数**: 自由能计算 (free-energy), 耦合分子类型 (couple-moltype), 软核势 (soft-core potentials), Lambda窗口 (lambda windows)
+
+### 伞形采样流程 (Umbrella Sampling Workflow)
+**When to use**: 沿1-2个反应坐标计算PMF (ch28)
+**How**:
+1. 拉伸模拟：`pull = yes`, `pull-coord1-type = umbrella`, `pull-coord1-rate = 0.01` (产生起始构型)
+2. 按所需间距(如0.1 nm)提取帧作为各窗口起始构型
+3. 伞形窗口：`pull-coord1-rate = 0.0`, `pull-coord1-k = 1000` (每个窗口固定位置)
+4. 每个窗口运行5-20 ns成品MD
+5. WHAM分析：`gmx wham` 重构无偏PMF
+6. ΔG_bind = PMF台地值 - PMF极小值
+**Trade-offs**: 窗口间距必须使直方图有重叠。力常数权衡定位精度与采样宽度
+**中文关键参数**: 拉伸模拟 (pulling simulation), 伞形采样 (umbrella sampling), 平均力势 (PMF), 加权直方图分析 (WHAM), 反应坐标 (reaction coordinate)
+
+### 膜模拟流程 (Membrane Simulation Workflow)
+**When to use**: 嵌入蛋白质到脂质双层中 (ch16)
+**How**:
+1. 定向蛋白和膜在同一坐标框架 (`editconf -box`)
+2. 串接蛋白+膜 .gro 文件
+3. 膨胀脂质(scale factor 4)在蛋白周围创造空间
+4. 删除重叠脂质(截止半径以Å计)
+5. 对膨胀系统做能量最小化
+6. 迭代收缩(factor 0.95, ~26轮)到面积/脂质收敛至目标值
+7. 加水溶剂化
+8. 用 water_deletor.pl 移除膜核心中的水
+9. 加中和离子
+10. 用半各向同性压力耦合 (`pcoupltype = semiisotropic`) 平衡
+**membed方法** (ProtSqueeze技术): xy平面收缩蛋白→删除重叠脂质→逐步恢复蛋白原子→同时对系统其余部分做常规动力学
+**Trade-offs**: InflateGRO对CHARMM36系统已不推荐，使用CHARMM-GUI代替。手动方法教力场内部原理
+**中文关键参数**: 膜蛋白嵌入 (membrane protein embedding, memed), 半各向同性压力耦合 (semi-isotropic pressure coupling), 面积/脂质 (area per lipid, ~62-64 Å² for DPPC), 脂质双层 (lipid bilayer), Berger脂质 (Berger lipids)
+
+### 配体参数化流程 (Ligand Parametrization Workflow) [中文版]
+**When to use**: 模拟含有非标准小分子配体的蛋白质 (ch08)
+**How**:
+1. 将PDB分为仅蛋白和仅配体文件
+2. 对蛋白单独运行 `pdb2gmx`
+3. 在Avogadro中给配体加H → 导出为Sybyl .mol2格式
+4. 修正 .mol2: 一致的残基名、升序的键序 (`sort_mol2_bonds.pl`)
+5. 提交CGenFF服务器 → 下载 .str → 转换为GROMACS .itp格式
+6. 编辑 .itp: 移除独立部分、嵌入成键参数、重命名moleculetype
+7. 合并配体坐标到蛋白 .gro; 更新原子计数
+8. 在 topol.top 中 `[ moleculetype ]` 前添加 `#include "ligand.itp"`
+9. 在 `[ molecules ]` 部分添加配体条目
+10. 用 `gmx genrestr` 为配体非H原子生成位置限制
+**Trade-offs**: CGenFF惩罚分数指示参数质量。ATB(GROMOS), Antechamber(AMBER/GAFF), LigParGen(OPLS)为替代工具
+
+### 碳纳米管建模流程 (Carbon Nanotube Modeling) [Andrea Minoia 教程]
+**When to use**: 使用OPLS-AA参数对碳纳米管进行模拟 (ch40)
+**How**:
+1. 使用 buildCstruct (Python脚本) 或 TubeGen 在线工具生成CNT结构
+2. 输出PDB复制粘贴到文件并命名为 cnt.pdb
+3. 创建教程页面中列出的必备文件
+4. 使用OPLS-AA力场进行参数化
+5. 运行标准EM → NVT → NPT → 成品MD流程
+**Trade-offs**: 简单CNT结构容易获得，教程包含所有必要文件和数据
