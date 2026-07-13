@@ -272,7 +272,7 @@ Use this **6-phase mental model** for every simulation project:
 ## Scope & Limits
 
 This skill covers the GROMACS 2026.2 manual content, enriched with:
-- **Justin A. Lemkul's practical tutorials** (CC-BY 4.0) — workflow examples integrated into relevant chapters (ch05, ch08, ch16, ch21, ch25, ch28, ch32)
+- **Justin A. Lemkul's practical tutorials**  — workflow examples integrated into relevant chapters (ch05, ch08, ch16, ch21, ch25, ch28, ch32)
 - **Chinese manual** (GROMACS 2019.6 中文译版) — comprehensive Chinese terminology, theoretical exposition, formulas, and concepts integrated into all 40 chapters
 
 For hands-on implementation, combine with actual GROMACS command execution (Bash). For force field-specific details beyond what's covered, consult the force field's original publications. Tutorial content from mdtutorials.com is provided under CC-BY 4.0 by Justin A. Lemkul. For topics beyond this skill, check the GROMACS website (https://www.gromacs.org) or the GROMACS user forum (https://gromacs.bioexcel.eu).
